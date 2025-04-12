@@ -1,3 +1,5 @@
+// @ts-check
+// ts-nocheck
 import express from "express";
 import path from "path";
 import http from "http";
@@ -5,39 +7,56 @@ import process from "process";
 import logger from "morgan";
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
+import mysql from "mysql2/promise";
 dotenv.config();
 
 const CONFIG = {
-  port: process.env.PORT || 3114, // Puerto por defecto
+  port: parseInt(process.env.PORT) || 3114, // Puerto por defecto
   address: process.env.ADDRESS || "localhost", // Dirección por defecto
   dbName: process.env.DB_NAME || "pp4a", // Nombre de la base de datos
   dbUser: process.env.DB_USER || "root", // Usuario de la base de datos
   dbPassword: process.env.DB_PASSWORD || "1234", // Contraseña de la base de datos
   dbHost: process.env.DB_HOST || "localhost", // Host de la base de datos
-  dbPort: process.env.DB_PORT || 3306, // Puerto de la base de datos
-  dbDialect: process.env.DB_DIALECT || "mysql", // Dialecto de la base de datos
-  dbLogsEnabled: process.env.DB_LOGS_ENABLED || false, // Habilitar logs de la base de datos
-  sequelizeBenchmarkEnabled: process.env.SEQUELIZE_BENCHMARK_ENABLED || false, // Habilitar benchmark de Sequelize
+  dbPort: parseInt(process.env.DB_PORT) || 3306, // Puerto de la base de datos
+
+  dbDialect: /**@type {import('sequelize').Dialect} */ ("mysql"), // Dialecto de la base de datos
+  dbLogsEnabled: process.env.DB_LOGS_ENABLED === "true", // Habilitar logs de la base de datos
+  sequelizeBenchmarkEnabled:
+    process.env.SEQUELIZE_BENCHMARK_ENABLED === "true" ? true : false, // Habilitar benchmark de Sequelize
 };
+
+const mysqlConnection = await mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "1234",
+});
+
+await mysqlConnection.query("CREATE DATABASE IF NOT EXISTS pp4a;");
+await mysqlConnection.end();
 
 const loggin = () => {
   return CONFIG.dbLogsEnabled ? console.log : false;
 };
 
-const db = new Sequelize(
-  CONFIG.dbName,
-  CONFIG.dbUser,
-  CONFIG.dbPassword,
-  {
-    host: CONFIG.dbHost,
-    dialect: CONFIG.dbDialect,
-    port: CONFIG.dbPort,
-    benchmark: CONFIG.sequelizeBenchmarkEnabled,
-    logging: loggin(),
-  }
-);
+const db = new Sequelize(CONFIG.dbName, CONFIG.dbUser, CONFIG.dbPassword, {
+  host: CONFIG.dbHost,
+  dialect: CONFIG.dbDialect,
+  port: CONFIG.dbPort,
+  benchmark: CONFIG.sequelizeBenchmarkEnabled,
+  logging: loggin(),
+});
 
 console.log("Configuración de la base de datos:", db.config);
+
+try {
+  await db.authenticate();
+  console.log(
+    "Connection has been established successfully to: ",
+    db.config.database
+  );
+} catch (error) {
+  console.error("Unable to connect to the database:", error);
+}
 
 console.log("Starting server...");
 
@@ -61,8 +80,13 @@ app.use(express.static(path.join(path.resolve(), "public")));
 // app.use("/v1", routes); // Aquí se podrían agregar rutas adicionales
 
 // Ruta raíz
-app.use("/", function (req, res) {
-  return res.send("¡Hola!");
+/**
+ * @param {Request} req - The Express request object.
+ * @param {Response} res - The Express response object.
+ * @returns {void}
+ */
+app.use("/", (req, res) => {
+  res.send("API IS UP AND RUNNING!");
 });
 
 app.set("port", CONFIG.port);
