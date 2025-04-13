@@ -6,7 +6,7 @@ import http from "http";
 import process from "process";
 import logger from "morgan";
 import dotenv from "dotenv";
-import { Sequelize } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 import mysql from "mysql2/promise";
 dotenv.config();
 
@@ -57,6 +57,34 @@ try {
 } catch (error) {
   console.error("Unable to connect to the database:", error);
 }
+
+const User = db.define(
+  "User",
+  {
+    // Model attributes are defined here
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      // allowNull defaults to true
+    },
+  },
+  {
+    tableName: "User",
+  }
+);
+
+await db.sync({ force: true });
+console.log("All models were synchronized successfully.");
+
+console.log("Models:", db.models);
 
 console.log("Starting server...");
 
