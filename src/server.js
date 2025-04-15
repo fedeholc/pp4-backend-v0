@@ -67,21 +67,76 @@ const User = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    firstName: {
+    userName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lastName: {
+    password: {
       type: DataTypes.STRING,
       // allowNull defaults to true
     },
   },
   {
     tableName: "User",
+    timestamps: true,
   }
 );
 
+const Client = db.define(
+  "Client",
+  {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "User", // This is the table name of the User model
+        key: "id", // This is the primary key of the User model
+      },
+    },
+  },
+  {
+    tableName: "Client",
+    timestamps: true,
+  }
+);
+
+Client.belongsTo(User, { foreignKey: "userId", as: "user" });
+
 await db.sync({ force: true });
+ 
+User.create({
+  userName: "admin",
+  password: "admin",
+})
+  .then(() => {
+    console.log("User created successfully.");
+  })
+  .catch((error) => {
+    console.error("Error creating user:", error);
+  });
+Client.create({
+  firstName: "John",
+  lastName: "Doe",
+  userId: 1,
+})
+  .then(() => {
+    console.log("Client created successfully.");
+  })
+  .catch((error) => {
+    console.error("Error creating client:", error);
+  }); 
+
+// Sincroniza los modelos con la base de datos
+/* await db.sync({ force: true }); */
+
 console.log("All models were synchronized successfully.");
 
 console.log("Models:", db.models);
