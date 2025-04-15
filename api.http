@@ -1,3 +1,32 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0dXNlckB0ZXN0LmNvbSIsInJvbCI6ImNsaWVudGUiLCJpYXQiOjE3NDQ3Mzk1MzUsImV4cCI6MTc0NDc2ODMzNX0.qzLjgu_PmMV2p8TgKVSPpssAn249j5ZLJWg7WKNPx8E
+###
 
 GET / HTTP/1.1
-Host: localhost:3114
+Host: localhost:5000
+
+###
+POST /api/auth/register HTTP/1.1
+Host: localhost:5000
+Content-Type: application/json
+
+{
+  "email": "testuser@test.com",
+  "password": "testpassword",
+  "rol": "cliente"
+}
+
+###
+POST /api/auth/login HTTP/1.1
+Host: localhost:5000
+Content-Type: application/json
+
+{
+  "email": "testuser@test.com",
+  "password": "testpassword"
+}
+
+###
+GET /api/usuarios/0 HTTP/1.1
+Host: localhost:5000
+Content-Type: application/json
+Authorization: Bearer {{token}}

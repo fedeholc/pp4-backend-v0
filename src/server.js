@@ -1,147 +1,27 @@
 // @ts-check
 // ts-nocheck
-import express from "express";
-import path from "path";
-import http from "http";
-import process from "process";
-import logger from "morgan";
 import dotenv from "dotenv";
-import { Sequelize, DataTypes } from "sequelize";
+import express from "express";
+import http from "http";
+import logger from "morgan";
 import mysql from "mysql2/promise";
+import path from "path";
+import process from "process";
+import passport from "./config/passport.js";
+import areasRoutes from "./routes/areasRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import usuarioRoutes from "./routes/usuarioRoutes.js";
+import clienteRoutes from "./routes/clienteRoutes.js";
+import pedidoRoutes from "./routes/pedidoRoutes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
 dotenv.config();
 
 const CONFIG = {
   port: parseInt(process.env.PORT) || 3114, // Puerto por defecto
   address: process.env.ADDRESS || "localhost", // Dirección por defecto
-  dbName: process.env.DB_NAME || "pp4a", // Nombre de la base de datos
-  dbUser: process.env.DB_USER || "root", // Usuario de la base de datos
-  dbPassword: process.env.DB_PASSWORD || "1234", // Contraseña de la base de datos
-  dbHost: process.env.DB_HOST || "localhost", // Host de la base de datos
-  dbPort: parseInt(process.env.DB_PORT) || 3306, // Puerto de la base de datos
-
-  dbDialect: /**@type {import('sequelize').Dialect} */ ("mysql"), // Dialecto de la base de datos
-  dbLogsEnabled: process.env.DB_LOGS_ENABLED === "true", // Habilitar logs de la base de datos
-  sequelizeBenchmarkEnabled:
-    process.env.SEQUELIZE_BENCHMARK_ENABLED === "true" ? true : false, // Habilitar benchmark de Sequelize
 };
-
-const mysqlConnection = await mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "1234",
-});
-
-await mysqlConnection.query("CREATE DATABASE IF NOT EXISTS pp4a;");
-await mysqlConnection.end();
-
-const loggin = () => {
-  return CONFIG.dbLogsEnabled ? console.log : false;
-};
-
-const db = new Sequelize(CONFIG.dbName, CONFIG.dbUser, CONFIG.dbPassword, {
-  host: CONFIG.dbHost,
-  dialect: CONFIG.dbDialect,
-  port: CONFIG.dbPort,
-  benchmark: CONFIG.sequelizeBenchmarkEnabled,
-  logging: loggin(),
-});
-
-console.log("Configuración de la base de datos:", db.config);
-
-try {
-  await db.authenticate();
-  console.log(
-    "Connection has been established successfully to: ",
-    db.config.database
-  );
-} catch (error) {
-  console.error("Unable to connect to the database:", error);
-}
-
-const User = db.define(
-  "User",
-  {
-    // Model attributes are defined here
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    userName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      // allowNull defaults to true
-    },
-  },
-  {
-    tableName: "User",
-    timestamps: true,
-  }
-);
-
-const Client = db.define(
-  "Client",
-  {
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "User", // This is the table name of the User model
-        key: "id", // This is the primary key of the User model
-      },
-    },
-  },
-  {
-    tableName: "Client",
-    timestamps: true,
-  }
-);
-
-Client.belongsTo(User, { foreignKey: "userId", as: "user" });
-
-await db.sync({ force: true });
- 
-User.create({
-  userName: "admin",
-  password: "admin",
-})
-  .then(() => {
-    console.log("User created successfully.");
-  })
-  .catch((error) => {
-    console.error("Error creating user:", error);
-  });
-Client.create({
-  firstName: "John",
-  lastName: "Doe",
-  userId: 1,
-})
-  .then(() => {
-    console.log("Client created successfully.");
-  })
-  .catch((error) => {
-    console.error("Error creating client:", error);
-  }); 
-
-// Sincroniza los modelos con la base de datos
-/* await db.sync({ force: true }); */
-
-console.log("All models were synchronized successfully.");
-
-console.log("Models:", db.models);
-
-console.log("Starting server...");
 
 // instancia de la aplicación Express
 const app = express();
@@ -159,8 +39,21 @@ app.use(express.urlencoded({ extended: true }));
 // para servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(path.resolve(), "public")));
 
-// rutas
-// app.use("/v1", routes); // Aquí se podrían agregar rutas adicionales
+// Inicializa passport
+app.use(passport.initialize());
+
+// Rutas de la API
+app.use("/api/areas", areasRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/clientes", clienteRoutes);
+app.use("/api/pedidos", pedidoRoutes);
+
+// Documentación OpenAPI
+const swaggerDocument = YAML.load(
+  path.join(path.resolve(), "src/docs/openapi.yaml")
+);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Ruta raíz
 /**
@@ -168,9 +61,12 @@ app.use(express.static(path.join(path.resolve(), "public")));
  * @param {Response} res - The Express response object.
  * @returns {void}
  */
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("API IS UP AND RUNNING!");
 });
+
+// Middleware de manejo de errores global
+app.use(errorHandler);
 
 app.set("port", CONFIG.port);
 
