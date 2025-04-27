@@ -1,13 +1,30 @@
 import pool from "../config/db.js";
+import { ClienteSchema } from "../types/schemas.js";
+
+/** @typedef {import('../types/index.ts').Cliente} Cliente */
 
 export async function getAllClientes() {
   const [rows] = await pool.query("SELECT * FROM Cliente");
   return rows;
 }
-
+ 
+/**
+ * Obtiene un cliente por ID y valida el resultado.
+ * @param {number} id
+ * @returns {Promise<Cliente|null>}
+ */
 export async function getClienteById(id) {
   const [rows] = await pool.query("SELECT * FROM Cliente WHERE id = ?", [id]);
-  return rows[0] || null;
+  const cliente = rows[0] || null;
+  if (!cliente) return null;
+
+  const parsed = ClienteSchema.safeParse(cliente);
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Cliente válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
 
 export async function createCliente(cliente) {
@@ -17,7 +34,14 @@ export async function createCliente(cliente) {
     "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)",
     [id, usuarioId, nombre, apellido, telefono, direccion]
   );
-  return { id: result.insertId, usuarioId, nombre, apellido, telefono, direccion };
+  return {
+    id: result.insertId,
+    usuarioId,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+  };
 }
 
 export async function updateCliente(id, cliente) {

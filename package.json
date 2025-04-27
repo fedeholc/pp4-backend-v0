@@ -23,7 +23,8 @@
     "passport-jwt": "^4.0.1",
     "sequelize": "^6.37.7",
     "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",

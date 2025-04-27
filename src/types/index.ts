@@ -1,103 +1,19 @@
-export type Area = {
-  id: number | null;
-  nombre: string | null;
-  descripcion: string | null;
-};
+import { z } from 'zod';
+import { ClienteSchema, AreaSchema, UsuarioSchema, TecnicoSchema, PedidoSchema, PedidoCandidatosSchema, PedidoDisponibilidadSchema, PedidoEstadoEnum, PedidoDisponibilidadDiaEnum, TecnicoAreaSchema, UsuarioRolEnum, FacturaSchema, FacturaMetodoPagoEnum } from './schemas';
+export type Cliente = z.infer<typeof ClienteSchema>;
+export type Area = z.infer<typeof AreaSchema>;
+export type Usuario = z.infer<typeof UsuarioSchema>;
+export type Tecnico = z.infer<typeof TecnicoSchema>;
+export type TecnicoArea = z.infer<typeof TecnicoAreaSchema>;
+export type Pedido = z.infer<typeof PedidoSchema>;
+export type PedidoCandidatos = z.infer<typeof PedidoCandidatosSchema>;
+export type PedidoDisponibilidad = z.infer<typeof PedidoDisponibilidadSchema>;
+export type PedidoEstado = z.infer<typeof PedidoEstadoEnum>;
+export type PedidoDisponibilidadDia = z.infer<typeof PedidoDisponibilidadDiaEnum>;
+export type UsuarioRol = z.infer<typeof UsuarioRolEnum>;
+export type Factura = z.infer<typeof FacturaSchema>;
+export type FacturaMetodoPago = z.infer<typeof FacturaMetodoPagoEnum>;
 
-export type UsuarioRol = 'cliente' | 'tecnico' | 'admin';
-
-export type Usuario = {
-  id: number | null;
-  email: string | null;
-  password?: string | null;
-  rol: UsuarioRol | null;
-};
-
-export type Cliente = {
-  id: number | null;
-  usuarioId: number | null;
-  nombre: string | null;
-  apellido: string | null;
-  telefono: string | null;
-  direccion: string | null;
-  fechaRegistro: Date | null;
-};
-
-export type Tecnico = {
-  id: number | null;
-  usuarioId: number | null;
-  nombre: string | null;
-  apellido: string | null;
-  telefono: string | null;
-  direccion: string | null;
-  caracteristicas: string | null;
-  fechaRegistro: Date | null;
-};
-
-export type TecnicoArea = {
-  id: number | null;
-  tecnicoId: number | null;
-  areaId: number | null;
-};
-
-export type PedidoEstado =
-  | 'sin_candidatos'
-  | 'con_candidatos'
-  | 'tecnico_seleccionado'
-  | 'cancelado'
-  | 'finalizado'
-  | 'calificado';
-
-export type Pedido = {
-  id: number | null;
-  clienteId: number | null;
-  tecnicoId: number | null;
-  estado: PedidoEstado | null;
-  areaId: number | null;
-  requerimiento: string | null;
-  calificacion: number | null;
-  comentario: string | null;
-  respuesta: string | null;
-  fechaCreacion: Date | null;
-  fechaCierre: Date | null;
-  fechaCancelado: Date | null;
-};
-
-// Tipos agregados para PedidoDisponibilidad y PedidoCandidatos
-
-export type PedidoDisponibilidadDia =
-  | 'lunes'
-  | 'martes'
-  | 'miércoles'
-  | 'jueves'
-  | 'viernes'
-  | 'sábado';
-
-export type PedidoDisponibilidad = {
-  id: number | null;
-  pedidoId: number | null;
-  clienteId: number | null;
-  dia: PedidoDisponibilidadDia | null;
-  horaInicio: string | null; // formato 'HH:MM:SS'
-  horaFin: string | null;    // formato 'HH:MM:SS'
-};
-
-export type PedidoCandidatos = {
-  id: number | null;
-  pedidoId: number | null;
-  tecnicoId: number | null;
-};
-
-export type FacturaMetodoPago = 'tarjeta' | 'transferencia';
-
-export type Factura = {
-  id: number | null;
-  usuarioId: number | null;
-  fecha: Date | null;
-  descripcion: string | null;
-  total: number | null; // DECIMAL maps to number in TypeScript
-  metodoPago: FacturaMetodoPago | null;
-};
 
 export type TecnicoConAreas = Tecnico & {
   areas: Area[] | null;
