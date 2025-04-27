@@ -1,7 +1,9 @@
 import * as areasService from "../services/areasService.js";
 
 /**
- * Obtiene todas las áreas.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 export async function getAll(req, res, next) {
   try {
@@ -13,7 +15,9 @@ export async function getAll(req, res, next) {
 }
 
 /**
- * Crea un área nueva.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 export async function create(req, res, next) {
   try {
@@ -25,7 +29,9 @@ export async function create(req, res, next) {
 }
 
 /**
- * Obtiene un área por ID.
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 export async function getById(req, res, next) {
   try {
@@ -38,7 +44,9 @@ export async function getById(req, res, next) {
 }
 
 /**
- * Actualiza un área.
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 export async function update(req, res, next) {
   try {
@@ -50,7 +58,9 @@ export async function update(req, res, next) {
 }
 
 /**
- * Elimina un área.
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 export async function remove(req, res, next) {
   try {
