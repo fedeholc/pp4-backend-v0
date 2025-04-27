@@ -40,14 +40,52 @@ export type TecnicoArea = {
   areaId: number | null;
 };
 
-export type PedidoEstado = 'pendiente' | 'en_proceso' | 'completado' | 'cancelado';
+export type PedidoEstado =
+  | 'sin_candidatos'
+  | 'con_candidatos'
+  | 'tecnico_seleccionado'
+  | 'cancelado'
+  | 'finalizado'
+  | 'calificado';
 
 export type Pedido = {
   id: number | null;
   clienteId: number | null;
-  descripcion: string | null;
-  fechaSolicitud: Date | null;
+  tecnicoId: number | null;
   estado: PedidoEstado | null;
+  areaId: number | null;
+  requerimiento: string | null;
+  calificacion: number | null;
+  comentario: string | null;
+  respuesta: string | null;
+  fechaCreacion: Date | null;
+  fechaCierre: Date | null;
+  fechaCancelado: Date | null;
+};
+
+// Tipos agregados para PedidoDisponibilidad y PedidoCandidatos
+
+export type PedidoDisponibilidadDia =
+  | 'lunes'
+  | 'martes'
+  | 'miércoles'
+  | 'jueves'
+  | 'viernes'
+  | 'sábado';
+
+export type PedidoDisponibilidad = {
+  id: number | null;
+  pedidoId: number | null;
+  clienteId: number | null;
+  dia: PedidoDisponibilidadDia | null;
+  horaInicio: string | null; // formato 'HH:MM:SS'
+  horaFin: string | null;    // formato 'HH:MM:SS'
+};
+
+export type PedidoCandidatos = {
+  id: number | null;
+  pedidoId: number | null;
+  tecnicoId: number | null;
 };
 
 export type FacturaMetodoPago = 'tarjeta' | 'transferencia';
@@ -64,7 +102,6 @@ export type Factura = {
 export type TecnicoConAreas = Tecnico & {
   areas: Area[] | null;
 };
-
 
 export type PedidoConCliente = Pedido & {
   cliente: Cliente | null;
