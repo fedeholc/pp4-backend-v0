@@ -11,7 +11,9 @@ const router = express.Router();
 //router.use(authenticateJWT, authorizeRoles("admin"));
 
 router.get("/", usuarioController.getAll);
+//@ts-ignore
 router.post("/", usuarioController.create);
+//@ts-ignore
 router.get("/:id", usuarioController.getById);
 router.put(
   "/:id",

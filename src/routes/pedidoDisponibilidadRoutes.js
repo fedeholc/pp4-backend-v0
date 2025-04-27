@@ -4,7 +4,9 @@ import * as pedidoDisponibilidadController from "../controllers/pedidoDisponibil
 const router = express.Router();
 
 router.get("/", pedidoDisponibilidadController.getAll);
+//@ts-ignore
 router.get("/:id", pedidoDisponibilidadController.getById);
+//@ts-ignore
 router.post("/", pedidoDisponibilidadController.create);
 router.put("/:id", pedidoDisponibilidadController.update);
 router.delete("/:id", pedidoDisponibilidadController.remove);

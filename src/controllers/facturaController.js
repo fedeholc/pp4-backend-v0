@@ -1,5 +1,10 @@
 import * as facturaService from "../services/facturaService.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getAll(req, res, next) {
   try {
     const facturas = await facturaService.getAllFacturas();
@@ -9,6 +14,11 @@ export async function getAll(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getById(req, res, next) {
   try {
     const factura = await facturaService.getFacturaById(req.params.id);
@@ -20,6 +30,11 @@ export async function getById(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function create(req, res, next) {
   try {
     const { id, usuarioId, fecha, descripcion, total, metodoPago } = req.body;
@@ -39,6 +54,11 @@ export async function create(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function update(req, res, next) {
   try {
     await facturaService.updateFactura(req.params.id, req.body);
@@ -48,6 +68,11 @@ export async function update(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function remove(req, res, next) {
   try {
     await facturaService.deleteFactura(req.params.id);

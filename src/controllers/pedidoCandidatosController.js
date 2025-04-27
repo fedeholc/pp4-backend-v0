@@ -1,5 +1,10 @@
 import * as pedidoCandidatosService from "../services/pedidoCandidatosService.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getAll(req, res, next) {
   try {
     const items = await pedidoCandidatosService.getAllPedidoCandidatos();
@@ -9,6 +14,11 @@ export async function getAll(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getById(req, res, next) {
   try {
     const item = await pedidoCandidatosService.getPedidoCandidatosById(
@@ -24,6 +34,11 @@ export async function getById(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function create(req, res, next) {
   try {
     const data = req.body;
@@ -36,6 +51,11 @@ export async function create(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function update(req, res, next) {
   try {
     await pedidoCandidatosService.updatePedidoCandidatos(
@@ -48,6 +68,11 @@ export async function update(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function remove(req, res, next) {
   try {
     await pedidoCandidatosService.deletePedidoCandidatos(req.params.id);

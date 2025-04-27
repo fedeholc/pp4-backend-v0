@@ -1,5 +1,10 @@
 import * as usuarioService from "../services/usuarioService.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getAll(req, res, next) {
   try {
     const usuarios = await usuarioService.getAllUsuarios();
@@ -9,6 +14,11 @@ export async function getAll(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getById(req, res, next) {
   try {
     const usuario = await usuarioService.getUsuarioById(req.params.id);
@@ -20,6 +30,11 @@ export async function getById(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function create(req, res, next) {
   try {
     const { email, password, rol } = req.body;
@@ -32,6 +47,11 @@ export async function create(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function update(req, res, next) {
   try {
     const { email, password, rol } = req.body;
@@ -42,6 +62,11 @@ export async function update(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function remove(req, res, next) {
   try {
     await usuarioService.deleteUsuario(req.params.id);

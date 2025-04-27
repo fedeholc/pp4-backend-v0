@@ -1,5 +1,10 @@
 import * as tecnicoService from "../services/tecnicoService.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getAll(req, res, next) {
   try {
     const tecnicos = await tecnicoService.getAllTecnicos();
@@ -9,6 +14,11 @@ export async function getAll(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getById(req, res, next) {
   try {
     const tecnico = await tecnicoService.getTecnicoById(req.params.id);
@@ -20,6 +30,11 @@ export async function getById(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function create(req, res, next) {
   try {
     const {
@@ -48,6 +63,11 @@ export async function create(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function update(req, res, next) {
   try {
     const { nombre, apellido, telefono, direccion, caracteristicas } = req.body;
@@ -64,6 +84,11 @@ export async function update(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function remove(req, res, next) {
   try {
     await tecnicoService.deleteTecnico(req.params.id);

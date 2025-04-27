@@ -10,7 +10,9 @@ const router = express.Router();
 router.use(authenticateJWT);
 
 router.get("/", tecnicoAreasController.getAll);
+//@ts-ignore
 router.get("/:id", tecnicoAreasController.getById);
+//@ts-ignore
 router.post("/", tecnicoAreasController.create);
 router.put("/:id", tecnicoAreasController.update);
 router.delete("/:id", authorizeRoles("admin"), tecnicoAreasController.remove);

@@ -1,5 +1,10 @@
 import * as pedidoService from "../services/pedidoService.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getAll(req, res, next) {
   try {
     const pedidos = await pedidoService.getAllPedidos();
@@ -9,6 +14,11 @@ export async function getAll(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function getById(req, res, next) {
   try {
     const pedido = await pedidoService.getPedidoById(req.params.id);
@@ -20,14 +30,15 @@ export async function getById(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function create(req, res, next) {
   try {
     const pedido = req.body;
-    if (
-      !pedido.clienteId ||
-      !pedido.areaId ||
-      !pedido.requerimiento
-    )
+    if (!pedido.clienteId || !pedido.areaId || !pedido.requerimiento)
       return res.status(400).json({ message: "Faltan datos requeridos" });
     const nuevoPedido = await pedidoService.createPedido(pedido);
     res.status(201).json(nuevoPedido);
@@ -36,6 +47,11 @@ export async function create(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function update(req, res, next) {
   try {
     await pedidoService.updatePedido(req.params.id, req.body);
@@ -45,6 +61,11 @@ export async function update(req, res, next) {
   }
 }
 
+/**
+ * @param {import('express').Request & { params: { id: number }}} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export async function remove(req, res, next) {
   try {
     await pedidoService.deletePedido(req.params.id);

@@ -17,6 +17,7 @@ router.post(
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
+  //@ts-ignore
   areasController.getById
 );
 router.put(
