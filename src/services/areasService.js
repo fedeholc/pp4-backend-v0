@@ -1,42 +1,71 @@
-/**
- * Servicio para la entidad Areas.
- * @module services/areasService
- */
 import pool from "../config/db.js";
+import { AreaSchema } from "../types/schemas.js";
+
+/** @typedef {import('../types/index.js').Area} Area */
+/** @typedef {import("mysql2").QueryResult} QueryResult */
+/** @typedef {import("mysql2").FieldPacket} FieldPacket */
+/** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
 /**
  * Obtiene todas las áreas.
- * @returns {Promise<import('mysql2').RowDataPacket[]>}
+ * @returns {Promise<Area[]>}
  */
 export async function getAllAreas() {
-  const [rows] = await pool.query("SELECT * FROM Areas");
-  // Cast rows to the expected type, as pool.query can return different result types.
-  return /** @type {import('mysql2').RowDataPacket[]} */ (rows);
+  const rows = await pool.query("SELECT * FROM Areas");
+  const areas = rows.map((row) => {
+    const parsed = AreaSchema.safeParse(row);
+    if (!parsed.success) {
+      throw new Error("El resultado no es un Area válido", {
+        cause: parsed.error,
+      });
+    }
+    return parsed.data;
+  });
+  return areas;
 }
 
 /**
  * Crea un área nueva.
- * @param {Object} area
- * @returns {Promise<Object>}
+ * @param {Area} area
+ * @returns {Promise<Area>}
  */
 export async function createArea(area) {
   const { id, nombre, descripcion } = area;
-  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+  /** @type {[ResultSetHeader, FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Areas (id, nombre, descripcion) VALUES (?, ?, ?)",
     [id, nombre, descripcion]
   );
-  return { id: result.insertId, nombre, descripcion };
+  // Validar el área creada
+  const parsed = AreaSchema.safeParse({
+    id: result.insertId,
+    nombre,
+    descripcion,
+  });
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Area válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
 
 /**
  * Obtiene un área por ID.
  * @param {number} id
- * @returns {Promise<Object|null>}
+ * @returns {Promise<Area|null>}
  */
 export async function getAreaById(id) {
   const [rows] = await pool.query("SELECT * FROM Areas WHERE id = ?", [id]);
-  return rows[0] || null;
+  const area = { ...(rows[0] || null) };
+  if (!area) return null;
+  const parsed = AreaSchema.safeParse(area);
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Area válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
 
 /**

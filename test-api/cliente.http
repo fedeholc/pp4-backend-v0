@@ -29,7 +29,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Actualizar cliente
-PUT /api/clientes/9 HTTP/1.1
+PUT /api/clientes/1 HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
 Authorization: Bearer {{token}}

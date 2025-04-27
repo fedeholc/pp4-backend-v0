@@ -1,39 +1,97 @@
 import pool from "../config/db.js";
 import bcrypt from "bcrypt";
+import { UsuarioSchema } from "../types/schemas.js";
 
+/** @typedef {import('../types/index.js').Usuario} Usuario */
+
+/** @typedef {import("mysql2").QueryResult} QueryResult */
+/** @typedef {import("mysql2").FieldPacket} FieldPacket */
+/** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
+
+/**
+ *
+ * @returns {Promise<Usuario[]>}
+ */
 export async function getAllUsuarios() {
-  const [rows] = await pool.query("SELECT id, email, rol FROM Usuario");
-  return rows;
+  const rows = await pool.query("SELECT id, email, rol FROM Usuario");
+  const usuarios = rows.map((row) => {
+    const parsed = UsuarioSchema.safeParse(row);
+    if (!parsed.success) {
+      throw new Error("El resultado no es un Usuario válido", {
+        cause: parsed.error,
+      });
+    }
+    return parsed.data;
+  });
+  return usuarios;
 }
 
+/**
+ *
+ * @param {number} id
+ * @returns  {Promise<Usuario|null>}
+ */
 export async function getUsuarioById(id) {
   const [rows] = await pool.query(
     "SELECT id, email, rol FROM Usuario WHERE id = ?",
     [id]
   );
-  return rows[0] || null;
+  const usuario = { ...(rows[0] || null) };
+  if (!usuario) return null;
+  const parsed = UsuarioSchema.safeParse(usuario);
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Usuario válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
 
-export async function createUsuario({ email, password, rol }) {
-  const hash = await bcrypt.hash(password, 10);
-  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+/**
+ *
+ * @param {Usuario} usuario
+ * @returns {Promise<Usuario>}
+ */
+export async function createUsuario(usuario) {
+  const hash = await bcrypt.hash(usuario.password, 10);
+
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Usuario (email, password, rol) VALUES (?, ?, ?)",
-    [email, hash, rol]
+    [usuario.email, hash, usuario.rol]
   );
-  return { id: result.insertId, email, rol };
+  // Validar el usuario creado
+  const parsed = UsuarioSchema.safeParse({
+    id: result.insertId,
+    email: usuario.email,
+    rol: usuario.rol,
+  });
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Usuario válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
 
-export async function updateUsuario(id, { email, password, rol }) {
+/**
+ *
+ * @param {number} id
+ * @param {Usuario} usuario
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ *
+ */
+export async function updateUsuario(id, usuario) {
   let query = "UPDATE Usuario SET email = ?, rol = ?";
-  const params = [email, rol];
-  if (password) {
+  const params = [usuario.email, usuario.rol];
+  if (usuario.password) {
     query += ", password = ?";
-    params.push(await bcrypt.hash(password, 10));
+    params.push(await bcrypt.hash(usuario.password, 10));
   }
   query += " WHERE id = ?";
-  params.push(id);
-  await pool.query(query, params);
+  params.push(id.toString());
+  const result = await pool.query(query, params);
+  return result;
 }
 
 export async function deleteUsuario(id) {

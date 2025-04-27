@@ -3,54 +3,54 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import process from "node:process";
 import { config } from "dotenv";
-config();
+import { UsuarioSchema } from "../types/schemas.js";
 
+/** @typedef {import("mysql2").QueryResult} QueryResult */
+/** @typedef {import("mysql2").FieldPacket} FieldPacket */
+/** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
+/** @typedef {import('../types/index.ts').Usuario} Usuario */
+
+config();
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
 /**
  * Registra un nuevo usuario.
  */
 export async function register({ email, password, rol }) {
-  /** @type {[number & RowDataPacket[], import("mysql2").FieldPacket[]]} */
-  const [exists] = await pool.query("SELECT id FROM Usuario WHERE email = ?", [
-    email,
-  ]);
+  const exists = /** @type {number[]} */ await pool.query(
+    "SELECT id FROM Usuario WHERE email = ?",
+    [email]
+  );
+
   if (exists?.length > 0) throw new Error("El email ya está registrado");
+
   const hash = await bcrypt.hash(password, 10);
-  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+
+  /** @type {[ResultSetHeader,FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Usuario (email, password, rol) VALUES (?, ?, ?)",
     [email, hash, rol]
   );
-  return { id: result.insertId, email, rol };
+  // Validar el usuario creado
+  const parsed = UsuarioSchema.safeParse({ id: result.insertId, email, rol });
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Usuario válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
 }
-
-/**
- * @typedef {import("mysql2").RowDataPacket} RowDataPacket
- */
-
-/**
- * @typedef {Object} UsuarioBase
- * @property {number} id - Identificador único del usuario.
- * @property {string} email - Correo electrónico del usuario.
- * @property {string} password - Hash de la contraseña del usuario.
- * @property {'cliente'|'tecnico'|'admin'} rol - Rol del usuario.
- */
-
-/**
- * @typedef {UsuarioBase & RowDataPacket} Usuario
- */
 
 /**
  * Autentica un usuario y retorna un JWT.
  */
 export async function login({ email, password }) {
-  /** @type {[Usuario[], import("mysql2").FieldPacket[]]} */
-  const [users] = await pool.query("SELECT * FROM Usuario WHERE email = ?", [
-    email,
-  ]);
+  const users = /** @type {Usuario[]} */ (
+    await pool.query("SELECT * FROM Usuario WHERE email = ?", [email])
+  );
   if (users.length === 0) throw new Error("Credenciales inválidas");
-  const user = users[0];
+
+  const user = /** @type {Usuario} */ (users[0]);
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) throw new Error("Credenciales inválidas");
   const token = jwt.sign(
