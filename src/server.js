@@ -13,6 +13,7 @@ import authRoutes from "./routes/authRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import clienteRoutes from "./routes/clienteRoutes.js";
 import pedidoRoutes from "./routes/pedidoRoutes.js";
+import facturaRoutes from "./routes/facturaRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -48,6 +49,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/pedidos", pedidoRoutes);
+app.use("/api/facturas", facturaRoutes);
 
 // Documentación OpenAPI
 const swaggerDocument = YAML.load(
