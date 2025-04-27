@@ -8,6 +8,10 @@ import { UsuarioSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
+
+ 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
 /** @typedef {import('../types/index.ts').Usuario} Usuario */
 
 config();

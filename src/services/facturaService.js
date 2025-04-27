@@ -5,6 +5,9 @@ import { FacturaSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+
 /** @typedef {import('../types/index.ts').Factura} Factura */
 
 /**
@@ -74,22 +77,25 @@ export async function createFactura(factura) {
 /**
  * @param {number} id
  * @param {Partial<Factura>} factura
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<UpdateResult>}
  */
 export async function updateFactura(id, factura) {
   const { usuarioId, fecha, descripcion, total, metodoPago } = factura;
-  const result = await pool.query(
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query(
     "UPDATE Factura SET usuarioId = ?, fecha = ?, descripcion = ?, total = ?, metodoPago = ? WHERE id = ?",
     [usuarioId, fecha, descripcion, total, metodoPago, id]
   );
-  return result;
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }
 
 /**
  * @param {number} id
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<DeleteResult>}
  */
 export async function deleteFactura(id) {
-  const result = await pool.query("DELETE FROM Factura WHERE id = ?", [id]);
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query("DELETE FROM Factura WHERE id = ?", [id]);
   return result;
 }

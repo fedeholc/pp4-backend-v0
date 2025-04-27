@@ -5,6 +5,9 @@ import { TecnicoAreaSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+
 /** @typedef {import('../types/index.ts').TecnicoArea} TecnicoArea */
 
 /**
@@ -75,23 +78,29 @@ export async function createTecnicoArea(tecnicoArea) {
  * 
  * @param {number} id 
  * @param {TecnicoArea} tecnicoArea 
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<UpdateResult>}
 
  */
 export async function updateTecnicoArea(id, tecnicoArea) {
   const { tecnicoId, areaId } = tecnicoArea;
-  const result = await pool.query(
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query(
     "UPDATE TecnicoAreas SET tecnicoId = ?, areaId = ? WHERE id = ?",
     [tecnicoId, areaId, id]
   );
-  return result;
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }
 
 /**
  * @param {number} id
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<DeleteResult>}
  */
 export async function deleteTecnicoArea(id) {
-  const result = await pool.query("DELETE FROM TecnicoAreas WHERE id = ?", [id]);
-  return result;
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query("DELETE FROM TecnicoAreas WHERE id = ?", [
+    id,
+  ]);
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }

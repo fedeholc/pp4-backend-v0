@@ -8,6 +8,9 @@ import { UsuarioSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+
 /**
  *
  * @returns {Promise<Usuario[]>}
@@ -78,7 +81,7 @@ export async function createUsuario(usuario) {
  *
  * @param {number} id
  * @param {Usuario} usuario
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<UpdateResult>}
  *
  */
 export async function updateUsuario(id, usuario) {
@@ -90,15 +93,19 @@ export async function updateUsuario(id, usuario) {
   }
   query += " WHERE id = ?";
   params.push(id.toString());
-  const result = await pool.query(query, params);
-  return result;
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query(query, params);
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }
 
 /**
  * @param {number} id
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<DeleteResult>}
  */
 export async function deleteUsuario(id) {
-  const result = await pool.query("DELETE FROM Usuario WHERE id = ?", [id]);
-  return result;
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query("DELETE FROM Usuario WHERE id = ?", [id]);
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }

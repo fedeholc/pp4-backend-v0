@@ -23,4 +23,6 @@ export type PedidoConCliente = Pedido & {
   cliente: Cliente | null;
 };
 
+export type UpdateResult = { affectedRows: number } | null;
+export type DeleteResult = { affectedRows: number } | null;
 

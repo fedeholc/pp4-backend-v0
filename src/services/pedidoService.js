@@ -5,6 +5,10 @@ import { PedidoSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+
+ 
 /** @typedef {import('../types/index.ts').Pedido} Pedido */
 
 /**
@@ -106,7 +110,7 @@ export async function createPedido(pedido) {
 /** 
  * @param {number} id
  * @param {Pedido} pedido
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<UpdateResult>}
 
 */
 export async function updatePedido(id, pedido) {
@@ -123,7 +127,8 @@ export async function updatePedido(id, pedido) {
     fechaCierre,
     fechaCancelado,
   } = pedido;
-  const result = await pool.query(
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query(
     "UPDATE Pedido SET id=? clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
     [
       clienteId,
@@ -140,14 +145,17 @@ export async function updatePedido(id, pedido) {
       id,
     ]
   );
-  return result;
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }
 
 /**
  * @param {number} id
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<DeleteResult>}
  */
 export async function deletePedido(id) {
-  const result = await pool.query("DELETE FROM Pedido WHERE id = ?", [id]);
-  return result;
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query("DELETE FROM Pedido WHERE id = ?", [id]);
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }

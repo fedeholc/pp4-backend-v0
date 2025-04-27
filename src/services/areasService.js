@@ -6,6 +6,9 @@ import { AreaSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
+/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
+/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+
 /**
  * Obtiene todas las áreas.
  * @returns {Promise<Area[]>}
@@ -84,10 +87,12 @@ export async function updateArea(id, area) {
 
 /**
  * @param {number} id
- * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ * @returns {Promise<DeleteResult>}
  */
 export async function deleteArea(id) {
-  const result = await pool.query("DELETE FROM Areas WHERE id = ?", [id]);
+  /** @type {[ ResultSetHeader,  FieldPacket[]]} */
+  const [result] = await pool.query("DELETE FROM Areas WHERE id = ?", [id]);
   // Cast result to ResultSetHeader to access affectedRows
-  return result;
+  const affectedRows = result.affectedRows;
+  return { affectedRows };
 }
