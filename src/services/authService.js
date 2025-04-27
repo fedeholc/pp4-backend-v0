@@ -1,8 +1,9 @@
 import pool from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
+import process from "node:process";
+import { config } from "dotenv";
+config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
@@ -10,11 +11,13 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
  * Registra un nuevo usuario.
  */
 export async function register({ email, password, rol }) {
+  /** @type {[number & RowDataPacket[], import("mysql2").FieldPacket[]]} */
   const [exists] = await pool.query("SELECT id FROM Usuario WHERE email = ?", [
     email,
   ]);
-  if (exists.length > 0) throw new Error("El email ya está registrado");
+  if (exists?.length > 0) throw new Error("El email ya está registrado");
   const hash = await bcrypt.hash(password, 10);
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Usuario (email, password, rol) VALUES (?, ?, ?)",
     [email, hash, rol]

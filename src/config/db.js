@@ -4,6 +4,8 @@
  */
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import process from "node:process";
+
 dotenv.config();
 
 const pool = mysql.createPool({

@@ -2,6 +2,8 @@ import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import pool from "./db.js";
 import dotenv from "dotenv";
+import process from "node:process";
+ 
 dotenv.config();
 
 const opts = {
