@@ -50,24 +50,16 @@ export type Pedido = {
   estado: PedidoEstado | null;
 };
 
-export type FacturaMetodoPago = 'efectivo' | 'tarjeta' | 'transferencia';
+export type FacturaMetodoPago = 'tarjeta' | 'transferencia';
 
 export type Factura = {
   id: number | null;
-  pedidoId: number | null;
+  usuarioId: number | null;
   fecha: Date | null;
+  descripcion: string | null;
   total: number | null; // DECIMAL maps to number in TypeScript
   metodoPago: FacturaMetodoPago | null;
 };
-
-export type FacturaDetalle = {
-  id: number | null;
-  facturaId: number | null;
-  descripcion: string | null;
-  cantidad: number | null;
-  precioUnitario: number | null; // DECIMAL maps to number
-};
-
 
 export type TecnicoConAreas = Tecnico & {
   areas: Area[] | null;
@@ -79,8 +71,3 @@ export type PedidoConCliente = Pedido & {
 };
 
 
-export type FacturaCompleta = Factura & {
-  detalles: FacturaDetalle[] | null;
-  pedido?: Pedido | null; // Optional and nullable
-  cliente?: Cliente | null; // Optional and nullable
-};

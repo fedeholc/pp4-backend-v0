@@ -1,4 +1,4 @@
--- db v0.1
+-- db v0.2
 -- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS pp4;
 ALTER DATABASE pp4 CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci;
@@ -8,7 +8,6 @@ USE pp4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- Eliminar tablas si existen
-DROP TABLE IF EXISTS FacturaDetalle;
 DROP TABLE IF EXISTS Factura;
 DROP TABLE IF EXISTS PedidoDisponibilidad;
 DROP TABLE IF EXISTS PedidoCandidatos;
@@ -21,20 +20,20 @@ DROP TABLE IF EXISTS Areas;
 
 -- Crear tablas base
 CREATE TABLE Areas (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
     descripcion TEXT
 );
 
 CREATE TABLE Usuario (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) UNIQUE,
     password VARCHAR(100),
     rol ENUM('cliente', 'tecnico', 'admin')
 );
 
 CREATE TABLE Cliente (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     usuarioId INT,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
@@ -45,7 +44,7 @@ CREATE TABLE Cliente (
 );
 
 CREATE TABLE Tecnico (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     usuarioId INT,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
@@ -57,7 +56,7 @@ CREATE TABLE Tecnico (
 );
 
 CREATE TABLE TecnicoAreas (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     tecnicoId INT,
     areaId INT,
     FOREIGN KEY (tecnicoId) REFERENCES Tecnico(id),
@@ -66,7 +65,7 @@ CREATE TABLE TecnicoAreas (
 
 -- Tabla de pedidos
 CREATE TABLE Pedido (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     clienteId INT,
     descripcion TEXT,
     fechaSolicitud DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -74,25 +73,18 @@ CREATE TABLE Pedido (
     FOREIGN KEY (clienteId) REFERENCES Cliente(id)
 );
 
+/* Unifico factura y factura detalle en una sola, y la hago que esté relacionada a un usuario no al pedido porque al final decidimos facturar las suscripciones a los ténicos */
 -- Tabla de facturas
 CREATE TABLE Factura (
-    id INT PRIMARY KEY,
-    pedidoId INT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    usuarioId INT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    descripcion TEXT,
     total DECIMAL(10,2),
-    metodoPago ENUM('efectivo', 'tarjeta', 'transferencia'),
-    FOREIGN KEY (pedidoId) REFERENCES Pedido(id)
+    metodoPago ENUM('tarjeta', 'transferencia'),
+    FOREIGN KEY (usuarioId) REFERENCES Usuario(id)
 );
 
--- Detalles de cada factura
-CREATE TABLE FacturaDetalle (
-    id INT PRIMARY KEY,
-    facturaId INT,
-    descripcion TEXT,
-    cantidad INT,
-    precioUnitario DECIMAL(10,2),
-    FOREIGN KEY (facturaId) REFERENCES Factura(id)
-);
 
 -- Insert de prueba
 INSERT INTO Areas (id, nombre, descripcion) VALUES 
@@ -114,12 +106,8 @@ INSERT INTO TecnicoAreas (id, tecnicoId, areaId) VALUES
 INSERT INTO Pedido (id, clienteId, descripcion, estado) VALUES
 (1, 1, 'Reparación de toma corriente', 'pendiente');
 
-INSERT INTO Factura (id, pedidoId, total, metodoPago) VALUES
-(1, 1, 3500.00, 'efectivo');
-
-INSERT INTO FacturaDetalle (id, facturaId, descripcion, cantidad, precioUnitario) VALUES
-(1, 1, 'Mano de obra', 1, 2000.00),
-(2, 1, 'Materiales eléctricos', 1, 1500.00);
-
+INSERT INTO Factura (id, usuarioId, descripcion, total, metodoPago) VALUES
+(1, 2, 'Suscripción Cuota 1', 3500.00, 'tarjeta');
+ 
 -- Reactivar claves foráneas
 SET FOREIGN_KEY_CHECKS = 1;
