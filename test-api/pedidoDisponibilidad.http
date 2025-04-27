@@ -1,0 +1,45 @@
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+
+### Obtener todas las disponibilidades de pedidos
+GET /api/pedido-disponibilidad HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener disponibilidad de pedido por ID
+GET /api/pedido-disponibilidad/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear disponibilidad de pedido
+POST /api/pedido-disponibilidad HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pedidoId": 1,
+  "usuarioId": 2,
+  "fecha": "2025-05-01",
+  "horaInicio": "09:00",
+  "horaFin": "12:00"
+}
+
+### Actualizar disponibilidad de pedido
+PUT /api/pedido-disponibilidad/1 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pedidoId": 1,
+  "usuarioId": 2,
+  "fecha": "2025-05-02",
+  "horaInicio": "10:00",
+  "horaFin": "13:00"
+}
+
+### Eliminar disponibilidad de pedido
+DELETE /api/pedido-disponibilidad/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}

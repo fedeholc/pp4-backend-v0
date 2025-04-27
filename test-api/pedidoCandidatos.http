@@ -1,0 +1,41 @@
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+
+### Obtener todos los candidatos de pedidos
+GET /api/pedido-candidatos HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener candidato de pedido por ID
+GET /api/pedido-candidatos/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear candidato de pedido
+POST /api/pedido-candidatos HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pedidoId": 1,
+  "usuarioId": 2,
+  "estado": "pendiente"
+}
+
+### Actualizar candidato de pedido
+PUT /api/pedido-candidatos/1 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pedidoId": 1,
+  "usuarioId": 2,
+  "estado": "aceptado"
+}
+
+### Eliminar candidato de pedido
+DELETE /api/pedido-candidatos/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}

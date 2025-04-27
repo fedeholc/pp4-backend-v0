@@ -13,6 +13,8 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import clienteRoutes from "./routes/clienteRoutes.js";
 import pedidoRoutes from "./routes/pedidoRoutes.js";
 import facturaRoutes from "./routes/facturaRoutes.js";
+import pedidoDisponibilidadRoutes from "./routes/pedidoDisponibilidadRoutes.js";
+import pedidoCandidatosRoutes from "./routes/pedidoCandidatosRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -49,6 +51,8 @@ app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/pedidos", pedidoRoutes);
 app.use("/api/facturas", facturaRoutes);
+app.use("/api/pedido-disponibilidad", pedidoDisponibilidadRoutes);
+app.use("/api/pedido-candidatos", pedidoCandidatosRoutes);
 
 // Documentación OpenAPI
 const swaggerDocument = YAML.load(
