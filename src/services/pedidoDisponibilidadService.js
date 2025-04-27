@@ -14,16 +14,18 @@ import { PedidoDisponibilidadSchema } from "../types/schemas.js";
  * @returns {Promise<PedidoDisponibilidad[]>}
  */
 export async function getAllPedidoDisponibilidad() {
-  const rows = await pool.query("SELECT * FROM PedidoDisponibilidad");
-  const disponibilidades = rows.map((row) => {
-    const parsed = PedidoDisponibilidadSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un PedidoDisponibilidad válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM PedidoDisponibilidad");
+  const disponibilidades =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = PedidoDisponibilidadSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un PedidoDisponibilidad válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return disponibilidades;
 }
 
@@ -37,7 +39,7 @@ export async function getPedidoDisponibilidadById(id) {
     "SELECT * FROM PedidoDisponibilidad WHERE id = ?",
     [id]
   );
-  const disponibilidad = { ...(rows[0] || null) };
+  const disponibilidad = rows[0];
   if (!disponibilidad) return null;
   const parsed = PedidoDisponibilidadSchema.safeParse(disponibilidad);
   if (!parsed.success) {

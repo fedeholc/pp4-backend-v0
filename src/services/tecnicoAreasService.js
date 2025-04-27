@@ -15,16 +15,18 @@ import { TecnicoAreaSchema } from "../types/schemas.js";
  * @returns {Promise<TecnicoArea[]>}
  */
 export async function getAllTecnicoAreas() {
-  const rows = await pool.query("SELECT * FROM TecnicoAreas");
-  const tecnicoAreas = rows.map((row) => {
-    const parsed = TecnicoAreaSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un TecnicoArea válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM TecnicoAreas");
+  const tecnicoAreas =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = TecnicoAreaSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un TecnicoArea válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return tecnicoAreas;
 }
 
@@ -37,7 +39,7 @@ export async function getTecnicoAreaById(id) {
   const [rows] = await pool.query("SELECT * FROM TecnicoAreas WHERE id = ?", [
     id,
   ]);
-  const tecnicoArea = { ...(rows[0] || null) };
+  const tecnicoArea = rows[0];
   if (!tecnicoArea) return null;
   const parsed = TecnicoAreaSchema.safeParse(tecnicoArea);
   if (!parsed.success) {

@@ -15,16 +15,18 @@ import { FacturaSchema } from "../types/schemas.js";
  * @returns {Promise<Factura[]>}
  */
 export async function getAllFacturas() {
-  const rows = await pool.query("SELECT * FROM Factura");
-  const facturas = rows.map((row) => {
-    const parsed = FacturaSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es una Factura válida", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM Factura");
+  const facturas =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = FacturaSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es una Factura válida", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return facturas;
 }
 
@@ -35,7 +37,7 @@ export async function getAllFacturas() {
  */
 export async function getFacturaById(id) {
   const [rows] = await pool.query("SELECT * FROM Factura WHERE id = ?", [id]);
-  const factura = { ...(rows[0] || null) };
+  const factura = rows[0];
   if (!factura) return null;
   const parsed = FacturaSchema.safeParse(factura);
   if (!parsed.success) {

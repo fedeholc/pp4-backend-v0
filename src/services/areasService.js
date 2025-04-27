@@ -14,16 +14,18 @@ import { AreaSchema } from "../types/schemas.js";
  * @returns {Promise<Area[]>}
  */
 export async function getAllAreas() {
-  const rows = await pool.query("SELECT * FROM Areas");
-  const areas = rows.map((row) => {
-    const parsed = AreaSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un Area válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM Areas");
+  const areas =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = AreaSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un Area válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return areas;
 }
 

@@ -14,16 +14,18 @@ import { TecnicoSchema } from "../types/schemas.js";
  * @returns {Promise<Tecnico[]>}
  */
 export async function getAllTecnicos() {
-  const rows = await pool.query("SELECT * FROM Tecnico");
-  const tecnicos = rows.map((row) => {
-    const parsed = TecnicoSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un Tecnico válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM Tecnico");
+  const tecnicos =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = TecnicoSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un Tecnico válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return tecnicos;
 }
 
@@ -34,7 +36,7 @@ export async function getAllTecnicos() {
  */
 export async function getTecnicoById(id) {
   const [rows] = await pool.query("SELECT * FROM Tecnico WHERE id = ?", [id]);
-  const tecnico = { ...(rows[0] || null) };
+  const tecnico = rows[0];
   if (!tecnico) return null;
   const parsed = TecnicoSchema.safeParse(tecnico);
   if (!parsed.success) {

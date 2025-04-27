@@ -15,16 +15,19 @@ import { ClienteSchema } from "../types/schemas.js";
  * @returns {Promise<Cliente[]>}
  */
 export async function getAllClientes() {
-  const rows = await pool.query("SELECT * FROM Cliente");
-  const clientes = rows.map((row) => {
-    const parsed = ClienteSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un Cliente válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM Cliente");
+  //check if rows is an array
+  const clientes =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = ClienteSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un Cliente válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return clientes;
 }
 
@@ -34,8 +37,8 @@ export async function getAllClientes() {
  * @returns {Promise<Cliente|null>}
  */
 export async function getClienteById(id) {
-  const rows = await pool.query("SELECT * FROM Cliente WHERE id = ?", [id]);
-  const cliente = { ...(rows[0] || null) };
+  const [rows] = await pool.query("SELECT * FROM Cliente WHERE id = ?", [id]);
+  const cliente = rows[0];
   if (!cliente) return null;
 
   const parsed = ClienteSchema.safeParse(cliente);

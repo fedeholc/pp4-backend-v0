@@ -14,16 +14,18 @@ import { PedidoCandidatosSchema } from "../types/schemas.js";
  * @returns {Promise<PedidoCandidatos[]>}
  */
 export async function getAllPedidoCandidatos() {
-  const rows = await pool.query("SELECT * FROM PedidoCandidatos");
-  const candidatos = rows.map((row) => {
-    const parsed = PedidoCandidatosSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un PedidoCandidatos válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM PedidoCandidatos");
+  const candidatos =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = PedidoCandidatosSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un PedidoCandidatos válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return candidatos;
 }
 
@@ -36,7 +38,7 @@ export async function getPedidoCandidatosById(id) {
     "SELECT * FROM PedidoCandidatos WHERE id = ?",
     [id]
   );
-  const candidato = { ...(rows[0] || null) };
+  const candidato = rows[0];
   if (!candidato) return null;
   const parsed = PedidoCandidatosSchema.safeParse(candidato);
   if (!parsed.success) {

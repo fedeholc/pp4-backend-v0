@@ -16,16 +16,18 @@ import { UsuarioSchema } from "../types/schemas.js";
  * @returns {Promise<Usuario[]>}
  */
 export async function getAllUsuarios() {
-  const rows = await pool.query("SELECT id, email, rol FROM Usuario");
-  const usuarios = rows.map((row) => {
-    const parsed = UsuarioSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un Usuario válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT id, email, rol FROM Usuario");
+  const usuarios =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = UsuarioSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un Usuario válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return usuarios;
 }
 
@@ -39,7 +41,7 @@ export async function getUsuarioById(id) {
     "SELECT id, email, rol FROM Usuario WHERE id = ?",
     [id]
   );
-  const usuario = { ...(rows[0] || null) };
+  const usuario = rows[0];
   if (!usuario) return null;
   const parsed = UsuarioSchema.safeParse(usuario);
   if (!parsed.success) {

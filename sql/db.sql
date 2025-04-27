@@ -110,7 +110,7 @@ CREATE TABLE Factura (
     usuarioId INT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     descripcion TEXT,
-    total DECIMAL(10,2),
+    total INT,
     metodoPago ENUM('tarjeta', 'transferencia'),
     FOREIGN KEY (usuarioId) REFERENCES Usuario(id)
 );

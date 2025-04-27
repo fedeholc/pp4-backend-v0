@@ -8,7 +8,6 @@ import { PedidoSchema } from "../types/schemas.js";
 /** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
 /** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
 
- 
 /** @typedef {import('../types/index.ts').Pedido} Pedido */
 
 /**
@@ -16,16 +15,18 @@ import { PedidoSchema } from "../types/schemas.js";
  * @returns {Promise<Pedido[]>}
  */
 export async function getAllPedidos() {
-  const rows = await pool.query("SELECT * FROM Pedido");
-  const pedidos = rows.map((row) => {
-    const parsed = PedidoSchema.safeParse(row);
-    if (!parsed.success) {
-      throw new Error("El resultado no es un Pedido válido", {
-        cause: parsed.error,
-      });
-    }
-    return parsed.data;
-  });
+  const [rows] = await pool.query("SELECT * FROM Pedido");
+  const pedidos =
+    Array.isArray(rows) &&
+    rows.map((row) => {
+      const parsed = PedidoSchema.safeParse(row);
+      if (!parsed.success) {
+        throw new Error("El resultado no es un Pedido válido", {
+          cause: parsed.error,
+        });
+      }
+      return parsed.data;
+    });
   return pedidos;
 }
 
@@ -35,7 +36,7 @@ export async function getAllPedidos() {
  */
 export async function getPedidoById(id) {
   const [rows] = await pool.query("SELECT * FROM Pedido WHERE id = ?", [id]);
-  const pedido = { ...(rows[0] || null) };
+  const pedido = rows[0];
   if (!pedido) return null;
   const parsed = PedidoSchema.safeParse(pedido);
   if (!parsed.success) {
