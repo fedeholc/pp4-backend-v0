@@ -12,6 +12,7 @@ export async function getPedidoById(id) {
 
 export async function createPedido(pedido) {
   const {
+    id,
     clienteId,
     tecnicoId,
     estado,
@@ -26,8 +27,9 @@ export async function createPedido(pedido) {
   } = pedido;
   /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
   const [result] = await pool.query(
-    "INSERT INTO Pedido (clienteId, tecnicoId, estado, areaId, requerimiento, calificacion, comentario, respuesta, fechaCreacion, fechaCierre, fechaCancelado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO Pedido (id, clienteId, tecnicoId, estado, areaId, requerimiento, calificacion, comentario, respuesta, fechaCreacion, fechaCierre, fechaCancelado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
+      id,
       clienteId,
       tecnicoId,
       estado,
@@ -60,7 +62,7 @@ export async function updatePedido(id, pedido) {
     fechaCancelado,
   } = pedido;
   await pool.query(
-    "UPDATE Pedido SET clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
+    "UPDATE Pedido SET id=? clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
     [
       clienteId,
       tecnicoId,

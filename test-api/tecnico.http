@@ -1,0 +1,46 @@
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+#@token = {{$dotenv %tokenAdmin}}
+
+### Obtener todos los técnicos
+GET /api/tecnicos HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener técnico por ID
+GET /api/tecnicos/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear técnico (requiere admin)
+POST /api/tecnicos HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": null,
+  "usuarioId": 2,
+  "nombre": "Carlos",
+  "apellido": "López",
+  "telefono": "1133445566",
+  "direccion": "Calle Técnica 456"
+}
+
+### Actualizar técnico
+PUT /api/tecnicos/5 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nombre": "Carlos actualizado",
+  "apellido": "López",
+  "telefono": "1177889900",
+  "direccion": "Av. Técnica 789"
+}
+
+### Eliminar técnico (requiere admin)
+DELETE /api/tecnicos/5 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}

@@ -1,0 +1,41 @@
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+#@token = {{$dotenv %tokenAdmin}}
+
+### Obtener todas las relaciones técnico-área
+GET /api/tecnico-areas HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener relación técnico-área por ID
+GET /api/tecnico-areas/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear relación técnico-área (requiere admin)
+POST /api/tecnico-areas HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": null,
+  "tecnicoId": 2,
+  "areaId": 3
+}
+
+### Actualizar relación técnico-área
+PUT /api/tecnico-areas/7 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tecnicoId": 2,
+  "areaId": 4
+}
+
+### Eliminar relación técnico-área (requiere admin)
+DELETE /api/tecnico-areas/7 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
