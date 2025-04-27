@@ -23,7 +23,7 @@ export async function getById(req, res, next) {
 export async function create(req, res, next) {
   try {
     const { id, usuarioId, nombre, apellido, telefono, direccion } = req.body;
-    if (!id || !usuarioId || !nombre || !apellido)
+    if (!usuarioId || !nombre || !apellido)
       return res.status(400).json({ message: "Faltan datos requeridos" });
     const cliente = await clienteService.createCliente({
       id,

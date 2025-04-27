@@ -12,11 +12,19 @@ export async function getFacturaById(id) {
 
 export async function createFactura(factura) {
   const { id, usuarioId, fecha, descripcion, total, metodoPago } = factura;
-  await pool.query(
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+  const [result] = await pool.query(
     "INSERT INTO Factura (id, usuarioId, fecha, descripcion, total, metodoPago) VALUES (?, ?, ?, ?, ?, ?)",
     [id, usuarioId, fecha, descripcion, total, metodoPago]
   );
-  return { id, usuarioId, fecha, descripcion, total, metodoPago };
+  return {
+    id: result.insertId,
+    usuarioId,
+    fecha,
+    descripcion,
+    total,
+    metodoPago,
+  };
 }
 
 export async function updateFactura(id, factura) {

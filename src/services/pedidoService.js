@@ -25,7 +25,8 @@ export async function createPedido(pedido) {
     fechaCierre,
     fechaCancelado,
   } = pedido;
-  await pool.query(
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+  const [result] = await pool.query(
     "INSERT INTO Pedido (id, clienteId, tecnicoId, estado, areaId, requerimiento, califiacion, comentario, respuesta, fechaCreacion, fechaCierre, fechaCancelado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       id,
@@ -42,6 +43,7 @@ export async function createPedido(pedido) {
       fechaCancelado,
     ]
   );
+  pedido.id = result.insertId; // Set the id of the created pedido
   return pedido;
 }
 

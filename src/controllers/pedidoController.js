@@ -24,7 +24,6 @@ export async function create(req, res, next) {
   try {
     const pedido = req.body;
     if (
-      !pedido.id ||
       !pedido.clienteId ||
       !pedido.areaId ||
       !pedido.requerimiento

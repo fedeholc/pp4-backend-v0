@@ -19,7 +19,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 2,
+  "id": null,
   "clienteId": 1,
   "areaId": 1,
   "requerimiento": "Reparar enchufe suelto"

@@ -65,15 +65,45 @@ CREATE TABLE TecnicoAreas (
 
 -- Tabla de pedidos
 CREATE TABLE Pedido (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    clienteId INT,
-    descripcion TEXT,
-    fechaSolicitud DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('pendiente', 'en_proceso', 'completado', 'cancelado'),
-    FOREIGN KEY (clienteId) REFERENCES Cliente(id)
+    id int PRIMARY KEY,
+    clienteId int,
+    tecnicoId int, 
+    estado ENUM('sin_candidatos', 'con_candidatos', 'tecnico_seleccionado', 'cancelado', 'finalizado', 'calificado') DEFAULT 'sin_candidatos',
+    areaId int,
+    requerimiento TEXT,
+    calificacion int, --del 1 al 5?
+    comentario TEXT,--calificaión-comentario 
+    respuesta TEXT, --feedback del tecnico
+    fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fechaCierre DATETIME,
+    fechaCancelado DATETIME, --cancelado por el cliente 
+    FOREIGN KEY (clienteId) REFERENCES Cliente(id),
+    FOREIGN KEY (tecnicoId) REFERENCES Tecnico(id),
+    FOREIGN KEY (areaId) REFERENCES Areas(id)
 );
 
-/* Unifico factura y factura detalle en una sola, y la hago que esté relacionada a un usuario no al pedido porque al final decidimos facturar las suscripciones a los ténicos */
+--Tabla de disponibilidad que dan los clientes 
+CREATE TABLE PedidoDisponibilidad (
+    id int PRIMARY KEY,
+    pedidoId int,
+    clienteId int,
+    dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'),
+    horaInicio TIME,
+    horaFin TIME,
+    FOREIGN KEY (clienteId) REFERENCES Cliente(id),
+    FOREIGN KEY (pedidoId) REFERENCES Pedido(id)
+);
+
+-- Tabla de candidatos a un pedido
+CREATE TABLE PedidoCandidatos (
+    id int PRIMARY KEY,
+    pedidoId int,
+    tecnicoId int,
+    FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
+    FOREIGN KEY (tecnicoId) REFERENCES Tecnico(id)
+);
+
+ 
 -- Tabla de facturas
 CREATE TABLE Factura (
     id INT PRIMARY KEY AUTO_INCREMENT,

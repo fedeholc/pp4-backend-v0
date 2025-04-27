@@ -16,6 +16,7 @@ export async function getUsuarioById(id) {
 
 export async function createUsuario({ email, password, rol }) {
   const hash = await bcrypt.hash(password, 10);
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Usuario (email, password, rol) VALUES (?, ?, ?)",
     [email, hash, rol]

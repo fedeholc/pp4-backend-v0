@@ -12,11 +12,12 @@ export async function getClienteById(id) {
 
 export async function createCliente(cliente) {
   const { id, usuarioId, nombre, apellido, telefono, direccion } = cliente;
-  await pool.query(
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+  const [result] = await pool.query(
     "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)",
     [id, usuarioId, nombre, apellido, telefono, direccion]
   );
-  return { id, usuarioId, nombre, apellido, telefono, direccion };
+  return { id: result.insertId, usuarioId, nombre, apellido, telefono, direccion };
 }
 
 export async function updateCliente(id, cliente) {

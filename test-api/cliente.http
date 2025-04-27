@@ -19,7 +19,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 2,
+  "id": null,
   "usuarioId": 1,
   "nombre": "Pedro",
   "apellido": "García",

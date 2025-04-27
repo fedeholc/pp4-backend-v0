@@ -21,11 +21,12 @@ export async function getAllAreas() {
  */
 export async function createArea(area) {
   const { id, nombre, descripcion } = area;
-  await pool.query(
+  /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
+  const [result] = await pool.query(
     "INSERT INTO Areas (id, nombre, descripcion) VALUES (?, ?, ?)",
     [id, nombre, descripcion]
   );
-  return { id, nombre, descripcion };
+  return { id: result.insertId, nombre, descripcion };
 }
 
 /**
@@ -60,5 +61,7 @@ export async function updateArea(id, area) {
 export async function deleteArea(id) {
   const [result] = await pool.query("DELETE FROM Areas WHERE id = ?", [id]);
   // Cast result to ResultSetHeader to access affectedRows
-  return /** @type {import('mysql2').ResultSetHeader} */ (result).affectedRows > 0;
+  return (
+    /** @type {import('mysql2').ResultSetHeader} */ (result).affectedRows > 0
+  );
 }

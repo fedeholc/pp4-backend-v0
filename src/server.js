@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import logger from "morgan";
-import mysql from "mysql2/promise";
 import path from "path";
 import process from "process";
 import passport from "./config/passport.js";

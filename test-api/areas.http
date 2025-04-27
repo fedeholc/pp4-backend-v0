@@ -18,7 +18,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 2,
+  "id": null,
   "nombre": "Plomería",
   "descripcion": "Servicios de plomería"
 }
