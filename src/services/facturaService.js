@@ -85,6 +85,11 @@ export async function updateFactura(id, factura) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deleteFactura(id) {
-  await pool.query("DELETE FROM Factura WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM Factura WHERE id = ?", [id]);
+  return result;
 }

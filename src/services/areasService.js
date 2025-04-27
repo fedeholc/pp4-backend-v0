@@ -83,14 +83,11 @@ export async function updateArea(id, area) {
 }
 
 /**
- * Elimina un área.
  * @param {number} id
- * @returns {Promise<boolean>}
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
  */
 export async function deleteArea(id) {
-  const [result] = await pool.query("DELETE FROM Areas WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM Areas WHERE id = ?", [id]);
   // Cast result to ResultSetHeader to access affectedRows
-  return (
-    /** @type {import('mysql2').ResultSetHeader} */ (result).affectedRows > 0
-  );
+  return result;
 }

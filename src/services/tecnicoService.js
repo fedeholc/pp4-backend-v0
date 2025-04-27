@@ -81,14 +81,26 @@ export async function createTecnico(tecnico) {
   return parsed.data;
 }
 
+/**
+ * 
+ * @param {number} id 
+ * @param {Tecnico} tecnico 
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function updateTecnico(id, tecnico) {
   const { nombre, apellido, telefono, direccion, caracteristicas } = tecnico;
-  await pool.query(
+  const result = await pool.query(
     "UPDATE Tecnico SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, caracteristicas = ? WHERE id = ?",
     [nombre, apellido, telefono, direccion, caracteristicas, id]
   );
+  return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deleteTecnico(id) {
-  await pool.query("DELETE FROM Tecnico WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM Tecnico WHERE id = ?", [id]);
+  return result;
 }

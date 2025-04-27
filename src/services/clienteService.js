@@ -81,6 +81,11 @@ export async function updateCliente(id, cliente) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deleteCliente(id) {
-  await pool.query("DELETE FROM Cliente WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM Cliente WHERE id = ?", [id]);
+  return result;
 }

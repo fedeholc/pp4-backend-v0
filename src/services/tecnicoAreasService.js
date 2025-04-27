@@ -87,6 +87,11 @@ export async function updateTecnicoArea(id, tecnicoArea) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deleteTecnicoArea(id) {
-  await pool.query("DELETE FROM TecnicoAreas WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM TecnicoAreas WHERE id = ?", [id]);
+  return result;
 }

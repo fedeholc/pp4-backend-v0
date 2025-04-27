@@ -94,6 +94,11 @@ export async function updateUsuario(id, usuario) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deleteUsuario(id) {
-  await pool.query("DELETE FROM Usuario WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM Usuario WHERE id = ?", [id]);
+  return result;
 }

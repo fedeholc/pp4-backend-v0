@@ -90,6 +90,11 @@ export async function updatePedidoDisponibilidad(id, data) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deletePedidoDisponibilidad(id) {
-  await pool.query("DELETE FROM PedidoDisponibilidad WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM PedidoDisponibilidad WHERE id = ?", [id]);
+  return result;
 }

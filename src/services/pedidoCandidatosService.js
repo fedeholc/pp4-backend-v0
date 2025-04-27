@@ -83,6 +83,11 @@ export async function updatePedidoCandidatos(id, pedidoCandidatos) {
   return result;
 }
 
+/**
+ * @param {number} id
+ * @returns {Promise<[QueryResult, FieldPacket[]]>}
+ */
 export async function deletePedidoCandidatos(id) {
-  await pool.query("DELETE FROM PedidoCandidatos WHERE id = ?", [id]);
+  const result = await pool.query("DELETE FROM PedidoCandidatos WHERE id = ?", [id]);
+  return result;
 }
