@@ -1,0 +1,43 @@
+@token = {{token}}
+@host = localhost:5000
+
+### Obtener todos los pedidos
+GET /api/pedidos HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener pedido por ID
+GET /api/pedidos/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear pedido
+POST /api/pedidos HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 2,
+  "clienteId": 1,
+  "areaId": 1,
+  "requerimiento": "Reparar enchufe suelto"
+}
+
+### Actualizar pedido
+PUT /api/pedidos/1 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "clienteId": 1,
+  "areaId": 1,
+  "requerimiento": "Actualizar requerimiento",
+  "estado": "en_proceso"
+}
+
+### Eliminar pedido
+DELETE /api/pedidos/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}

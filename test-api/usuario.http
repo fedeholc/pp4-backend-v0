@@ -1,0 +1,40 @@
+@token = {{token}}
+@host = localhost:5000
+
+### Obtener todos los usuarios
+GET /api/usuarios HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Obtener usuario por ID
+GET /api/usuarios/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
+### Crear usuario
+POST /api/usuarios HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "email": "nuevo@usuario.com",
+  "password": "123456",
+  "rol": "cliente"
+}
+
+### Actualizar usuario
+PUT /api/usuarios/1 HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "actualizado@usuario.com",
+  "password": "654321",
+  "rol": "tecnico"
+}
+
+### Eliminar usuario
+DELETE /api/usuarios/1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
