@@ -1,0 +1,26 @@
+{
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "extends": ["eslint:recommended", "plugin:import/recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/extensions": ["error", "always"],
+    "import/no-unresolved": "error",
+    "import/prefer-default-export": "off",
+    "no-useless-catch": "off",
+    "import/no-named-as-default-member": "off",
+    "no-extra-boolean-cast": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js"]
+      }
+    }
+  }
+}
