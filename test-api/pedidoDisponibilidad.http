@@ -19,8 +19,8 @@ Authorization: Bearer {{token}}
 
 {
   "pedidoId": 1,
-  "usuarioId": 2,
-  "fecha": "2025-05-01",
+  "clienteId": 2,
+  "dia": "lunes",
   "horaInicio": "09:00",
   "horaFin": "12:00"
 }

@@ -19,21 +19,22 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 2,
+  "id": null,
   "usuarioId": 1,
+  "tecnicoId": 1,
   "descripcion": "Pago de servicio",
   "total": 5000.00,
   "metodoPago": "tarjeta"
 }
 
 ### Actualizar factura
-PUT /api/facturas/1 HTTP/1.1
+PUT /api/facturas/6 HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "usuarioId": 1,
+  "usuarioId": 8,
   "descripcion": "Pago actualizado",
   "total": 6000.00,
   "metodoPago": "transferencia"

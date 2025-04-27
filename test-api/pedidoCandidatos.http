@@ -19,7 +19,7 @@ Authorization: Bearer {{token}}
 
 {
   "pedidoId": 1,
-  "usuarioId": 2,
+  "tecnicoId": 4,
   "estado": "pendiente"
 }
 
@@ -31,7 +31,7 @@ Authorization: Bearer {{token}}
 
 {
   "pedidoId": 1,
-  "usuarioId": 2,
+  "tecnicoId": 2,
   "estado": "aceptado"
 }
 

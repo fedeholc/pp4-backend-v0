@@ -29,8 +29,8 @@ export async function create(req, res, next) {
   try {
     const data = req.body;
     if (
-      !data.pedidoId ||
       !data.clienteId ||
+      !data.pedidoId ||
       !data.dia ||
       !data.horaInicio ||
       !data.horaFin

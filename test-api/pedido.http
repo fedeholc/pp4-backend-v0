@@ -19,10 +19,15 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": null,
-  "clienteId": 1,
-  "areaId": 1,
-  "requerimiento": "Reparar enchufe suelto"
+   "id": null,
+    "clienteId": 3,
+    "tecnicoId": null,
+    "estado": "sin_candidatos",
+    "areaId": 3,
+    "requerimiento": "Revisión de instalación de gas",
+    "calificacion": null,
+    "comentario": null,
+    "respuesta": null
 }
 
 ### Actualizar pedido
@@ -35,10 +40,10 @@ Authorization: Bearer {{token}}
   "clienteId": 1,
   "areaId": 1,
   "requerimiento": "Actualizar requerimiento",
-  "estado": "en_proceso"
+  "estado": "finalizado"
 }
 
 ### Eliminar pedido
-DELETE /api/pedidos/1 HTTP/1.1
+DELETE /api/pedidos/7 HTTP/1.1
 Host: {{host}}
 Authorization: Bearer {{token}}

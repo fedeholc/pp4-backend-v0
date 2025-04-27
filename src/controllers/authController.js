@@ -16,10 +16,10 @@ export async function register(req, res, next) {
       return res.status(400).json({ message: "Faltan datos requeridos" });
     if (!isValidEmail(email))
       return res.status(400).json({ message: "Email inválido" });
-    if (typeof password !== "string" || password.length < 6)
+    if (typeof password !== "string" || password.length < 4)
       return res
         .status(400)
-        .json({ message: "La contraseña debe tener al menos 6 caracteres" });
+        .json({ message: "La contraseña debe tener al menos 4 caracteres" });
     if (!allowedRoles.includes(rol))
       return res.status(400).json({ message: "Rol inválido" });
     const user = await authService.register({ email, password, rol });
@@ -39,10 +39,10 @@ export async function login(req, res, next) {
       return res.status(400).json({ message: "Faltan datos requeridos" });
     if (!isValidEmail(email))
       return res.status(400).json({ message: "Email inválido" });
-    if (typeof password !== "string" || password.length < 6)
+    if (typeof password !== "string" || password.length < 4)
       return res
         .status(400)
-        .json({ message: "La contraseña debe tener al menos 6 caracteres" });
+        .json({ message: "La contraseña debe tener al menos 4 caracteres" });
     const result = await authService.login({ email, password });
     res.json(result);
   } catch (err) {

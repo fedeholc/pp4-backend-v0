@@ -65,7 +65,7 @@ CREATE TABLE TecnicoAreas (
 
 -- Tabla de pedidos
 CREATE TABLE Pedido (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     clienteId int,
     tecnicoId int, 
     estado ENUM('sin_candidatos', 'con_candidatos', 'tecnico_seleccionado', 'cancelado', 'finalizado', 'calificado') DEFAULT 'sin_candidatos',
@@ -84,7 +84,7 @@ CREATE TABLE Pedido (
 
 -- Tabla de disponibilidad que dan los clientes 
 CREATE TABLE PedidoDisponibilidad (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     pedidoId int,
     clienteId int,
     dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'),
@@ -96,7 +96,7 @@ CREATE TABLE PedidoDisponibilidad (
 
 -- Tabla de candidatos a un pedido
 CREATE TABLE PedidoCandidatos (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     pedidoId int,
     tecnicoId int,
     FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
@@ -126,19 +126,19 @@ INSERT INTO Areas (id, nombre, descripcion) VALUES
 (6, 'Albañilería', 'Trabajos de albañilería y construcción');
 
 INSERT INTO Usuario (id, email, password, rol) VALUES
-(1, 'admin@test.com', '1234', 'admin'),
-(2, 'cliente@test.com', '1234', 'cliente'),
-(3, 'tecnico@test.com', '1234', 'tecnico'),
-(4, 'cliente1@test.com', '1234', 'cliente'),
-(5, 'cliente2@test.com', '1234', 'cliente'),
-(6, 'cliente3@test.com', '1234', 'cliente'),
-(7, 'cliente4@test.com', '1234', 'cliente'),
-(8, 'cliente5@test.com', '1234', 'cliente'),
-(9, 'tecnico1@test.com', '1234', 'tecnico'),
-(10, 'tecnico2@test.com', '1234', 'tecnico'),
-(11, 'tecnico3@test.com', '1234', 'tecnico'),
-(12, 'tecnico4@test.com', '1234', 'tecnico'),
-(13, 'tecnico5@test.com', '1234', 'tecnico');
+(1, 'admin@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'admin'),
+(2, 'cliente@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(3, 'tecnico@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico'),
+(4, 'cliente1@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(5, 'cliente2@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(6, 'cliente3@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(7, 'cliente4@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(8, 'cliente5@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'cliente'),
+(9, 'tecnico1@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico'),
+(10, 'tecnico2@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico'),
+(11, 'tecnico3@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico'),
+(12, 'tecnico4@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico'),
+(13, 'tecnico5@test.com', '$2b$10$o5YP9MjZPxa0hbJlbD.kteMQsCwj/Mn1uTAJGK2I2cdZTvRDQVHo2', 'tecnico');
 
 INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion) VALUES
 (1, 2, 'Juan', 'Pérez', '1122334455', 'Av. Siempre Viva 123'),

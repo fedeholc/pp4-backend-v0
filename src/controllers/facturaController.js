@@ -23,7 +23,7 @@ export async function getById(req, res, next) {
 export async function create(req, res, next) {
   try {
     const { id, usuarioId, fecha, descripcion, total, metodoPago } = req.body;
-    if (!id || !usuarioId || !descripcion || !total || !metodoPago)
+    if (!usuarioId || !descripcion || !total || !metodoPago)
       return res.status(400).json({ message: "Faltan datos requeridos" });
     const factura = await facturaService.createFactura({
       id,
