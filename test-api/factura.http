@@ -1,5 +1,6 @@
-@token = {{token}}
-@host = localhost:5000
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+
 
 ### Obtener todas las facturas
 GET /api/facturas HTTP/1.1

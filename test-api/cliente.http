@@ -1,5 +1,6 @@
-@token = {{token}}
-@host = localhost:5000
+@host = {{$dotenv %host}}
+@token = {{$dotenv %token}}
+
 
 ### Obtener todos los clientes
 GET /api/clientes HTTP/1.1
