@@ -32,17 +32,17 @@ export function authorizeSelfOrRoles(...roles) {
 }
 
 /**
- * Middleware para permitir solo al dueño del cliente o admin.
+ * Middleware para permitir solo al  cliente o admin.
  */
 export function authorizeClienteOwnerOrRoles(...roles) {
   return async (req, res, next) => {
     const clienteId = Number(req.params.id);
-    // Busca el usuario dueño del cliente
+
     const [rows] = await pool.query(
       "SELECT usuarioId FROM Cliente WHERE id = ?",
       [clienteId]
     );
-    if (rows.length === 0) {
+    if (!rows[0]) {
       return res.status(404).json({ message: "Cliente no encontrado" });
     }
     const ownerId = rows[0].usuario_id;
