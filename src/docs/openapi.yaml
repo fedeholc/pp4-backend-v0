@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: PP4 Backend API
+  description: API para la gestión de áreas, usuarios, clientes, pedidos, facturas, técnicos y autenticación.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3114/api
+    description: Servidor local de desarrollo
+paths:
+  /areas:
+    get:
+      summary: Obtener todas las áreas
+      tags:
+        - Areas
+      responses:
+        "200":
+          description: Lista de áreas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nombre:
+                      type: string
+  /auth/login:
+    post:
+      summary: Login de usuario
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Autenticación exitosa
+        "401":
+          description: Credenciales inválidas
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

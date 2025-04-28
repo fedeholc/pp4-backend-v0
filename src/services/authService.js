@@ -9,7 +9,6 @@ import { UsuarioSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
- 
 /** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
 /** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
 /** @typedef {import('../types/index.ts').Usuario} Usuario */
@@ -49,12 +48,12 @@ export async function register({ email, password, rol }) {
  * Autentica un usuario y retorna un JWT.
  */
 export async function login({ email, password }) {
-  const users = /** @type {Usuario[]} */ (
-    await pool.query("SELECT * FROM Usuario WHERE email = ?", [email])
-  );
-  if (users.length === 0) throw new Error("Credenciales inválidas");
+  const [result] = await pool.query("SELECT * FROM Usuario WHERE email = ?", [
+    email,
+  ]);
+  if (result[0].length === 0) throw new Error("Credenciales inválidas");
 
-  const user = /** @type {Usuario} */ (users[0]);
+  const user = /** @type {Usuario} */ (result[0]);
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) throw new Error("Credenciales inválidas");
   const token = jwt.sign(
