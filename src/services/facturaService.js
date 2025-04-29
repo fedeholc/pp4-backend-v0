@@ -5,10 +5,10 @@ import { FacturaSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
-/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
-/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+/** @typedef {import('../types').UpdateResult} UpdateResult */
+/** @typedef {import('../types').DeleteResult} DeleteResult */
 
-/** @typedef {import('../types/index.ts').Factura} Factura */
+/** @typedef {import('../types').Factura} Factura */
 
 /**
  *

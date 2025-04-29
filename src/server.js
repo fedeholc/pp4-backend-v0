@@ -23,7 +23,7 @@ import YAML from "yamljs";
 dotenv.config();
 
 const CONFIG = {
-  port: parseInt(process.env.PORT) || 3114, // Puerto por defecto
+  port: parseInt(process.env.PORT) || 5000, // Puerto por defecto
   address: process.env.ADDRESS || "localhost", // Dirección por defecto
 };
 

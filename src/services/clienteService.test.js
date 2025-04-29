@@ -7,9 +7,9 @@ import {
   deleteCliente,
 } from "../services/clienteService.js";
 import { ClienteSchema } from "../types/schemas";
-import { createUsuario, deleteUsuario } from "../services/usuarioService.js";
+import { createUsuario, deleteUsuario } from "./usuarioService.js";
 
-/** @typedef {import('../types/index.js').Usuario} Usuario */
+/** @typedef {import('../types').Usuario} Usuario */
 
 describe("getClienteById", () => {
   it("debe retornar un cliente válido si existe", async () => {

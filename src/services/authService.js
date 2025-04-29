@@ -9,9 +9,9 @@ import { UsuarioSchema } from "../types/schemas.js";
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
-/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
-/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
-/** @typedef {import('../types/index.ts').Usuario} Usuario */
+/** @typedef {import('../types').UpdateResult} UpdateResult */
+/** @typedef {import('../types').DeleteResult} DeleteResult */
+/** @typedef {import('../types').Usuario} Usuario */
 
 config();
 const JWT_SECRET = process.env.JWT_SECRET || "secret";

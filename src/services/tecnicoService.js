@@ -1,13 +1,13 @@
 import pool from "../config/db.js";
 import { TecnicoSchema } from "../types/schemas.js";
 
-/** @typedef {import('../types/index.js').Tecnico} Tecnico */
+/** @typedef {import('../types').Tecnico} Tecnico */
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
 /** @typedef {import("mysql2").ResultSetHeader} ResultSetHeader */
 
-/** @typedef {import('../types/index.ts').UpdateResult} UpdateResult */
-/** @typedef {import('../types/index.ts').DeleteResult} DeleteResult */
+/** @typedef {import('../types').UpdateResult} UpdateResult */
+/** @typedef {import('../types').DeleteResult} DeleteResult */
 
 /**
  *
