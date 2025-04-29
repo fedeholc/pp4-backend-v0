@@ -3,7 +3,7 @@
 
 
 GET / HTTP/1.1
-Host: localhost:5000
+Host: {{host}}
 
 ###
 POST /api/auth/register HTTP/1.1
