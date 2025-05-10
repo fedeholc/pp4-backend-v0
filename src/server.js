@@ -59,9 +59,8 @@ app.use("/api/tecnicos", tecnicoRoutes);
 app.use("/api/tecnico-areas", tecnicoAreasRoutes);
 
 // Documentación OpenAPI
-const swaggerDocument = YAML.load(
-  path.join(path.resolve(), "src/docs/openapi.yaml")
-);
+const swaggerDocument = YAML.load("./src/docs/openapi.yaml");
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Ruta raíz
