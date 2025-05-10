@@ -1,15 +1,16 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  getClienteById,
-  getAllClientes,
   createCliente,
-  updateCliente,
   deleteCliente,
+  getAllClientes,
+  getClienteById,
+  updateCliente,
 } from "../services/clienteService.js";
 import { ClienteSchema } from "../types/schemas";
 import { createUsuario, deleteUsuario } from "./usuarioService.js";
 
 /** @typedef {import('../types').Usuario} Usuario */
+
 
 describe("getClienteById", () => {
   it("debe retornar un cliente válido si existe", async () => {

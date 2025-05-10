@@ -28,7 +28,7 @@ const CONFIG = {
 };
 
 // instancia de la aplicación Express
-const app = express();
+export const app = express();
 
 // middlewares
 // para egistrar las solicitudes HTTP en la consola
