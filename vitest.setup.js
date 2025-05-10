@@ -38,7 +38,8 @@ async function executeSqlFile(filePath) {
   }
 }
 
-async function setupTestDatabase() {
+// Export this function as 'setup' for globalSetup
+export async function setup() {
   let initialConnection;
   try {
     // Conectarse al servidor MySQL (sin especificar una base de datos) para crear la BD de prueba
@@ -83,4 +84,3 @@ export async function teardown() {
 
 // Vitest ejecutará este archivo. La llamada a setupTestDatabase() iniciará el proceso.
 // La promesa devuelta por setupTestDatabase() será esperada por Vitest.
-await setupTestDatabase();
