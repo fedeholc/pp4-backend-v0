@@ -10,6 +10,15 @@ import process from "node:process";
 // Asegúrate de que NODE_ENV=test esté configurado al ejecutar Vitest.
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
+// Set a specific port for the test environment
+if (process.env.NODE_ENV === "test") {
+  const testPort = process.env.TEST_PORT || "5001";
+  process.env.PORT = testPort;
+  console.log(
+    `INFO: Running in test mode. HTTP server will use port ${process.env.PORT}`
+  );
+}
+
 const DB_HOST = process.env.DB_HOST || "localhost";
 const DB_USER = process.env.DB_USER || "root";
 const DB_PASSWORD = process.env.DB_PASSWORD || "1234";
