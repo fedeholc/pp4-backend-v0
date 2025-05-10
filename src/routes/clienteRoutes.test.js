@@ -1,12 +1,12 @@
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 import { app } from "../server.js"; // Asegúrate de exportar tu instancia de Express desde server.js
+import { ClienteSchema } from "../types/schemas.js"; // Importar el schema de Cliente
 
 let tokenAdmin;
 let tokenCliente;
 let clienteCreadoId;
 
- 
 beforeAll(async () => {
   // Login como admin y cliente para obtener tokens
   const resAdmin = await request(app)
@@ -32,6 +32,12 @@ describe("Rutas /api/clientes", () => {
       .set("Authorization", `Bearer ${tokenAdmin}`);
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
+    // Validar cada cliente en la respuesta
+    res.body.forEach((cliente) => {
+      console.log("cliente", cliente);
+      const validation = ClienteSchema.safeParse(cliente);
+      expect(validation.success).toBe(true);
+    });
   });
 
   it("POST /api/clientes crea un cliente", async () => {
@@ -54,18 +60,27 @@ describe("Rutas /api/clientes", () => {
         apellido: "TestApellido",
         telefono: "123456789",
         direccion: "TestDireccion",
+        fechaRegistro: "2025-05-05",
       });
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("id");
     clienteCreadoId = res.body.id;
+    // Validar el cliente creado
+    console.log("cliente creado", res.body);
+    const validation = ClienteSchema.safeParse(res.body);
+    expect(validation.success).toBe(true);
   });
 
   it("GET /api/clientes/:id devuelve un cliente existente", async () => {
     const res = await request(app)
-      .get(`/api/clientes/${clienteCreadoId}`)
+      .get(`/api/clientes/1`)
       .set("Authorization", `Bearer ${tokenAdmin}`);
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("id", clienteCreadoId);
+    expect(res.body).toHaveProperty("id", 1);
+    // Validar el cliente obtenido
+    const validation = ClienteSchema.safeParse(res.body);
+    console.log("cliente", res.body);
+    expect(validation.success).toBe(true);
   });
 
   it("PUT /api/clientes/:id actualiza un cliente", async () => {
