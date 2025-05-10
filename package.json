@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --watch-path=./src src/server.js",
     "dev": "node --watch-path=./src src/server.js",
-    "test": "vitest",
+    "test": "NODE_ENV=test vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -23,7 +23,6 @@
     "mysql2": "^3.14.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "sequelize": "^6.37.7",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0",
     "zod": "^3.24.3"

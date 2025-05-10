@@ -13,6 +13,11 @@ Si se quiere modificar la configuración que viene por defecto, crear el archivo
 ```bash
 PORT=5000
 ADDRESS=localhost
+DB_HOST=localhost,
+DB_USER=root,
+DB_PASSWORD=1234,
+DB_NAME=pp4,
+DB_TEST_NAME=pp4_test
 ```
 
 Para correr el backend:
