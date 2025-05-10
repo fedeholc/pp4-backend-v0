@@ -56,11 +56,19 @@ export async function getClienteById(id) {
  * @returns {Promise<Cliente>}>}
  */
 export async function createCliente(cliente) {
-  const { id, usuarioId, nombre, apellido, telefono, direccion } = cliente;
+  const {
+    id,
+    usuarioId,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+    fechaRegistro,
+  } = cliente;
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
-    "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)",
-    [id, usuarioId, nombre, apellido, telefono, direccion]
+    "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion, fechaRegistro) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [id, usuarioId, nombre, apellido, telefono, direccion, fechaRegistro]
   );
   return {
     id: result.insertId,
@@ -69,6 +77,7 @@ export async function createCliente(cliente) {
     apellido,
     telefono,
     direccion,
+    fechaRegistro,
   };
 }
 

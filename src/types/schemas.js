@@ -8,7 +8,7 @@ export const ClienteSchema = z.object({
   apellido: z.string().nullable(),
   telefono: z.string().nullable(),
   direccion: z.string().nullable(),
-  fechaRegistro: z.date().nullable(),
+  fechaRegistro: z.coerce.date().nullable(), // Cambiado a z.coerce.date()
 });
 
 // Area
@@ -36,7 +36,7 @@ export const TecnicoSchema = z.object({
   telefono: z.string().nullable(),
   direccion: z.string().nullable(),
   caracteristicas: z.string().nullable(),
-  fechaRegistro: z.date().nullable(),
+  fechaRegistro: z.coerce.date().nullable(),
 });
 
 // TecnicoArea
@@ -67,9 +67,9 @@ export const PedidoSchema = z.object({
   calificacion: z.number().nullable(),
   comentario: z.string().nullable(),
   respuesta: z.string().nullable(),
-  fechaCreacion: z.date().nullable(),
-  fechaCierre: z.date().nullable(),
-  fechaCancelado: z.date().nullable(),
+  fechaCreacion: z.coerce.date().nullable(),
+  fechaCierre: z.coerce.date().nullable(),
+  fechaCancelado: z.coerce.date().nullable(),
 });
 
 // PedidoDisponibilidadDia
@@ -106,7 +106,7 @@ export const FacturaMetodoPagoEnum = z.enum(["tarjeta", "transferencia"]);
 export const FacturaSchema = z.object({
   id: z.number().nullable(),
   usuarioId: z.number().nullable(),
-  fecha: z.date().nullable(),
+  fecha: z.coerce.date().nullable(),
   descripcion: z.string().nullable(),
   total: z.number().nullable(),
   metodoPago: FacturaMetodoPagoEnum.nullable(),
