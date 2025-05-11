@@ -20,12 +20,12 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
  * Registra un nuevo usuario.
  */
 export async function register({ email, password, rol }) {
-  const exists = /** @type {number[]} */ await pool.query(
+  const [exists] = /** @type {number[]} */ await pool.query(
     "SELECT id FROM Usuario WHERE email = ?",
     [email]
   );
 
-  if (exists?.length > 0) throw new Error("El email ya está registrado");
+  if (exists[0] > 0) throw new Error("El email ya está registrado");
 
   const hash = await bcrypt.hash(password, 10);
 
