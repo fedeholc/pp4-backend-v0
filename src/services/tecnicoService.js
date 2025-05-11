@@ -61,13 +61,27 @@ export async function createTecnico(tecnico) {
     telefono,
     direccion,
     caracteristicas,
+    fechaRegistro,
   } = tecnico;
+
+  // Formatear fechaRegistro a 'YYYY-MM-DD HH:mm:ss'
+  const formattedFechaRegistro = formatFechaRegistro(fechaRegistro);
 
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
-    "INSERT INTO Tecnico (id, usuarioId, nombre, apellido, telefono, direccion, caracteristicas) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    [id, usuarioId, nombre, apellido, telefono, direccion, caracteristicas]
+    "INSERT INTO Tecnico (id, usuarioId, nombre, apellido, telefono, direccion, caracteristicas, fechaRegistro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      id,
+      usuarioId,
+      nombre,
+      apellido,
+      telefono,
+      direccion,
+      caracteristicas,
+      formattedFechaRegistro,
+    ]
   );
+
   // Validar el técnico creado
   const parsed = TecnicoSchema.safeParse({
     id: result.insertId,
@@ -77,6 +91,7 @@ export async function createTecnico(tecnico) {
     telefono,
     direccion,
     caracteristicas,
+    fechaRegistro,
   });
   if (!parsed.success) {
     throw new Error("El resultado no es un Tecnico válido", {
@@ -84,6 +99,23 @@ export async function createTecnico(tecnico) {
     });
   }
   return parsed.data;
+}
+
+/**
+ * Formats a date string or Date object to 'YYYY-MM-DD HH:mm:ss'
+ * @param {string | number | Date} fechaRegistro
+ * @returns {string}
+ */
+export function formatFechaRegistro(fechaRegistro) {
+  const date = new Date(fechaRegistro);
+  const formattedFechaRegistro = `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")} ${String(
+    date.getHours()
+  ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
+    date.getSeconds()
+  ).padStart(2, "0")}`;
+  return formattedFechaRegistro;
 }
 
 /**
