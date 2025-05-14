@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get(
   "/",
-  passport.authenticate("jwt", { session: false }),
+
   areasController.getAll
 );
 router.post(
@@ -16,7 +16,7 @@ router.post(
 );
 router.get(
   "/:id",
-  passport.authenticate("jwt", { session: false }),
+ 
   //@ts-ignore
   areasController.getById
 );
