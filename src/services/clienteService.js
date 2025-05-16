@@ -1,5 +1,6 @@
 import pool from "../config/db.js";
 import { ClienteSchema } from "../types/schemas.js";
+import { formatFechaRegistro } from "./tecnicoService.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
@@ -56,11 +57,23 @@ export async function getClienteById(id) {
  * @returns {Promise<Cliente>}>}
  */
 export async function createCliente(cliente) {
-  const { id, usuarioId, nombre, apellido, telefono, direccion } = cliente;
+  const {
+    id,
+    usuarioId,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+    fechaRegistro,
+  } = cliente;
+  
+  // Formatear fechaRegistro a 'YYYY-MM-DD HH:mm:ss'
+  const formattedFechaRegistro = formatFechaRegistro(fechaRegistro);
+  
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
-    "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)",
-    [id, usuarioId, nombre, apellido, telefono, direccion]
+    "INSERT INTO Cliente (id, usuarioId, nombre, apellido, telefono, direccion, fechaRegistro) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [id, usuarioId, nombre, apellido, telefono, direccion, formattedFechaRegistro]
   );
   return {
     id: result.insertId,
@@ -69,6 +82,7 @@ export async function createCliente(cliente) {
     apellido,
     telefono,
     direccion,
+    fechaRegistro,
   };
 }
 

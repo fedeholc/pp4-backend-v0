@@ -20,6 +20,7 @@ import tecnicoAreasRoutes from "./routes/tecnicoAreasRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import cors from "cors";
 dotenv.config();
 
 const CONFIG = {
@@ -28,7 +29,7 @@ const CONFIG = {
 };
 
 // instancia de la aplicación Express
-const app = express();
+export const app = express();
 
 // middlewares
 // para egistrar las solicitudes HTTP en la consola
@@ -42,6 +43,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // para servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(path.resolve(), "public")));
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN || ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 // Inicializa passport
 app.use(passport.initialize());
@@ -59,9 +67,8 @@ app.use("/api/tecnicos", tecnicoRoutes);
 app.use("/api/tecnico-areas", tecnicoAreasRoutes);
 
 // Documentación OpenAPI
-const swaggerDocument = YAML.load(
-  path.join(path.resolve(), "src/docs/openapi.yaml")
-);
+const swaggerDocument = YAML.load("./src/docs/openapi.yaml");
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Ruta raíz

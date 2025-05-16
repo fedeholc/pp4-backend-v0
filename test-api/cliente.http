@@ -25,7 +25,8 @@ Authorization: Bearer {{token}}
   "nombre": "Pedro",
   "apellido": "García",
   "telefono": "1122334455",
-  "direccion": "Calle Nueva 123"
+  "direccion": "Calle Nueva 123",
+  "fechaRegistro": "2023-10-01"
 }
 
 ### Actualizar cliente

@@ -45,6 +45,7 @@ export async function create(req, res, next) {
       telefono,
       direccion,
       caracteristicas,
+      fechaRegistro
     } = req.body;
     if (!usuarioId || !nombre || !apellido)
       return res.status(400).json({ message: "Faltan datos requeridos" });
@@ -56,6 +57,7 @@ export async function create(req, res, next) {
       telefono,
       direccion,
       caracteristicas,
+      fechaRegistro
     });
     res.status(201).json(tecnico);
   } catch (err) {

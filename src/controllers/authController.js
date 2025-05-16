@@ -1,5 +1,6 @@
 import * as authService from "../services/authService.js";
-
+import jwt from "jsonwebtoken";
+import process from "node:process";
 const allowedRoles = ["cliente", "tecnico", "admin"];
 
 function isValidEmail(email) {
@@ -23,7 +24,16 @@ export async function register(req, res, next) {
     if (!allowedRoles.includes(rol))
       return res.status(400).json({ message: "Rol inválido" });
     const user = await authService.register({ email, password, rol });
-    res.status(201).json(user);
+    // Generar token JWT
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, rol: user.rol },
+      process.env.JWT_SECRET || "secret",
+      {
+        expiresIn: "1h",
+      }
+    );
+    res.status(201).json({ ...user, token });
   } catch (err) {
     next(err);
   }
