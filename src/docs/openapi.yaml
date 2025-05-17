@@ -162,6 +162,10 @@ paths:
                       rol:
                         type: string
                         enum: ["cliente", "tecnico", "admin"]
+                      cliente:
+                        $ref: "#/components/schemas/Cliente"
+                      tecnico:
+                        $ref: "#/components/schemas/Tecnico"
         "400":
           description: Datos inválidos o incompletos
         "401":
