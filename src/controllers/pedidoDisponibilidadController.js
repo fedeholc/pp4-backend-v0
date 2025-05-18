@@ -43,13 +43,7 @@ export async function getById(req, res, next) {
 export async function create(req, res, next) {
   try {
     const data = req.body;
-    if (
-      !data.clienteId ||
-      !data.pedidoId ||
-      !data.dia ||
-      !data.horaInicio ||
-      !data.horaFin
-    )
+    if (!data.clienteId || !data.pedidoId || !data.dia)
       return res.status(400).json({ message: "Faltan datos requeridos" });
     const nuevo = await pedidoDisponibilidadService.createPedidoDisponibilidad(
       data
