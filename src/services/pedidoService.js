@@ -1,6 +1,11 @@
 import pool from "../config/db.js";
 import { formatDateForMySQL } from "../helpers/formatDate.js";
-import { PedidoSchema } from "../types/schemas.js";
+import {
+  PedidoSchema,
+  PedidoCompletoSchema,
+  PedidoDisponibilidadSchema,
+  PedidoCandidatosSchema,
+} from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
@@ -12,22 +17,90 @@ import { PedidoSchema } from "../types/schemas.js";
 /** @typedef {import('../types').Pedido} Pedido */
 
 /**
- *
- * @returns {Promise<Pedido[]>}
+ * Construye un WHERE dinámico y los parámetros para una consulta SQL a partir de un objeto de filtros.
+ * @param {Object} filtros - Objeto con pares campo:valor
+ * @returns {{ where: string, params: any[] }}
  */
-export async function getAllPedidos() {
-  const [rows] = await pool.query("SELECT * FROM Pedido");
+export function buildWhereAndParams(filtros = {}) {
+  const keys = Object.keys(filtros);
+  if (keys.length === 0) return { where: "", params: [] };
+  const where = keys.map((campo) => `${campo} = ?`).join(" AND ");
+  const params = keys.map((campo) => filtros[campo]);
+  return { where, params };
+}
+
+/**
+ * Obtiene todos los pedidos, opcionalmente filtrando por los campos indicados en el objeto filtros.
+ * @param {Object} [filtros] - Objeto con pares campo:valor para filtrar
+ * @returns {Promise<import("../types").PedidoCompleto[]>} - Lista de pedidos
+ */
+export async function getAllPedidos(filtros = {}) {
+  let query = "SELECT * FROM Pedido";
+  const { where, params } = buildWhereAndParams(filtros);
+  if (where) {
+    query += ` WHERE ${where}`;
+  }
+  const [rows] = await pool.query(query, params);
   const pedidos =
     Array.isArray(rows) &&
-    rows.map((row) => {
-      const parsed = PedidoSchema.safeParse(row);
-      if (!parsed.success) {
-        throw new Error("El resultado no es un Pedido válido", {
-          cause: parsed.error,
-        });
-      }
-      return parsed.data;
-    });
+    (await Promise.all(
+      rows.map(async (row) => {
+        const parsed = PedidoSchema.safeParse(row);
+        if (!parsed.success) {
+          throw new Error("El resultado no es un Pedido válido", {
+            cause: parsed.error,
+          });
+        }
+        // Obtener info relacionada
+        const [disponibilidad] = await pool.query(
+          "SELECT * FROM PedidoDisponibilidad WHERE pedidoId = ?",
+          [row.id]
+        );
+        const [candidatos] = await pool.query(
+          "SELECT * FROM PedidoCandidatos WHERE pedidoId = ?",
+          [row.id]
+        );
+        const [clienteRows] = await pool.query(
+          "SELECT * FROM Cliente WHERE id = ?",
+          [row.clienteId]
+        );
+        const [tecnicoRows] = row.tecnicoId
+          ? await pool.query("SELECT * FROM Tecnico WHERE id = ?", [
+              row.tecnicoId,
+            ])
+          : [[]];
+        const [areaRows] = row.areaId
+          ? await pool.query("SELECT * FROM Areas WHERE id = ?", [row.areaId])
+          : [[]];
+        // Validar arrays relacionados
+        const disponibilidadVal = Array.isArray(disponibilidad)
+          ? disponibilidad.filter(
+              (d) => PedidoDisponibilidadSchema.safeParse(d).success
+            )
+          : [];
+        const candidatosVal = Array.isArray(candidatos)
+          ? candidatos.filter(
+              (c) => PedidoCandidatosSchema.safeParse(c).success
+            )
+          : [];
+        // Validar objeto completo
+        const pedidoCompleto = {
+          ...parsed.data,
+          cliente: clienteRows[0] || null,
+          tecnico: tecnicoRows[0] || null,
+          area: areaRows[0] || null,
+          disponibilidad: disponibilidadVal,
+          candidatos: candidatosVal,
+        };
+        const valid = PedidoCompletoSchema.safeParse(pedidoCompleto);
+        if (!valid.success) {
+          throw new Error("El resultado no es un PedidoCompleto válido", {
+            cause: valid.error,
+          });
+        }
+        return valid.data;
+      })
+    ));
   return pedidos;
 }
 
