@@ -1,6 +1,11 @@
 import pool from "../config/db.js";
 import { formatDateForMySQL } from "../helpers/formatDate.js";
-import { PedidoSchema } from "../types/schemas.js";
+import {
+  PedidoSchema,
+  PedidoCompletoSchema,
+  PedidoDisponibilidadSchema,
+  PedidoCandidatosSchema,
+} from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
@@ -27,7 +32,7 @@ export function buildWhereAndParams(filtros = {}) {
 /**
  * Obtiene todos los pedidos, opcionalmente filtrando por los campos indicados en el objeto filtros.
  * @param {Object} [filtros] - Objeto con pares campo:valor para filtrar
- * @returns {Promise<Pedido[]>}
+ * @returns {Promise<import("../types").PedidoCompleto[]>} - Lista de pedidos
  */
 export async function getAllPedidos(filtros = {}) {
   let query = "SELECT * FROM Pedido";
@@ -55,29 +60,45 @@ export async function getAllPedidos(filtros = {}) {
           "SELECT * FROM PedidoCandidatos WHERE pedidoId = ?",
           [row.id]
         );
-        // Cliente
         const [clienteRows] = await pool.query(
           "SELECT * FROM Cliente WHERE id = ?",
           [row.clienteId]
         );
-        // Tecnico
         const [tecnicoRows] = row.tecnicoId
           ? await pool.query("SELECT * FROM Tecnico WHERE id = ?", [
               row.tecnicoId,
             ])
           : [[]];
-        // Area
         const [areaRows] = row.areaId
           ? await pool.query("SELECT * FROM Areas WHERE id = ?", [row.areaId])
           : [[]];
-        return {
+        // Validar arrays relacionados
+        const disponibilidadVal = Array.isArray(disponibilidad)
+          ? disponibilidad.filter(
+              (d) => PedidoDisponibilidadSchema.safeParse(d).success
+            )
+          : [];
+        const candidatosVal = Array.isArray(candidatos)
+          ? candidatos.filter(
+              (c) => PedidoCandidatosSchema.safeParse(c).success
+            )
+          : [];
+        // Validar objeto completo
+        const pedidoCompleto = {
           ...parsed.data,
           cliente: clienteRows[0] || null,
           tecnico: tecnicoRows[0] || null,
           area: areaRows[0] || null,
-          disponibilidad: Array.isArray(disponibilidad) ? disponibilidad : [],
-          candidatos: Array.isArray(candidatos) ? candidatos : [],
+          disponibilidad: disponibilidadVal,
+          candidatos: candidatosVal,
         };
+        const valid = PedidoCompletoSchema.safeParse(pedidoCompleto);
+        if (!valid.success) {
+          throw new Error("El resultado no es un PedidoCompleto válido", {
+            cause: valid.error,
+          });
+        }
+        return valid.data;
       })
     ));
   return pedidos;
