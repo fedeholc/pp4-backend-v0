@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { formatDateForMySQL } from "../helpers/formatDate.js";
 import { PedidoSchema } from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
@@ -80,9 +81,9 @@ export async function createPedido(pedido) {
       calificacion,
       comentario,
       respuesta,
-      fechaCreacion,
-      fechaCierre,
-      fechaCancelado,
+      formatDateForMySQL(fechaCreacion),
+      formatDateForMySQL(fechaCierre),
+      formatDateForMySQL(fechaCancelado),
     ]
   );
   // Validar el pedido creado
@@ -101,6 +102,7 @@ export async function createPedido(pedido) {
     fechaCancelado,
   });
   if (!parsed.success) {
+    console.log("Error al crear el pedido:", parsed.error);
     throw new Error("El resultado no es un Pedido válido", {
       cause: parsed.error,
     });
