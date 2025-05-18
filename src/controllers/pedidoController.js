@@ -40,7 +40,10 @@ export async function create(req, res, next) {
     const pedido = req.body;
     if (!pedido.clienteId || !pedido.areaId || !pedido.requerimiento)
       return res.status(400).json({ message: "Faltan datos requeridos" });
+
+    console.log("Creando pedido:", pedido);
     const nuevoPedido = await pedidoService.createPedido(pedido);
+    console.log("Pedido creado:", nuevoPedido);
     res.status(201).json(nuevoPedido);
   } catch (err) {
     next(err);
