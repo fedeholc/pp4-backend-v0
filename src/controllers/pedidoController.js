@@ -7,8 +7,10 @@ import * as pedidoService from "../services/pedidoService.js";
  */
 export async function getAll(req, res, next) {
   try {
-    const pedidos = await pedidoService.getAllPedidos();
-    res.json(pedidos);
+    // Tomar todos los query params como filtros
+    const filtros = { ...req.query };
+    const pedidos = await pedidoService.getAllPedidos(filtros);
+    return res.json(pedidos);
   } catch (err) {
     next(err);
   }
@@ -40,7 +42,10 @@ export async function create(req, res, next) {
     const pedido = req.body;
     if (!pedido.clienteId || !pedido.areaId || !pedido.requerimiento)
       return res.status(400).json({ message: "Faltan datos requeridos" });
+
+    console.log("Creando pedido:", pedido);
     const nuevoPedido = await pedidoService.createPedido(pedido);
+    console.log("Pedido creado:", nuevoPedido);
     res.status(201).json(nuevoPedido);
   } catch (err) {
     next(err);

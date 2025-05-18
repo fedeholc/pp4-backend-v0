@@ -162,6 +162,10 @@ paths:
                       rol:
                         type: string
                         enum: ["cliente", "tecnico", "admin"]
+                      cliente:
+                        $ref: "#/components/schemas/Cliente"
+                      tecnico:
+                        $ref: "#/components/schemas/Tecnico"
         "400":
           description: Datos inválidos o incompletos
         "401":
@@ -452,17 +456,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    clienteId:
-                      type: integer
-                    estado:
-                      type: string
-                    fecha:
-                      type: string
-                      format: date-time
+                  $ref: "#/components/schemas/PedidoCompleto"
     post:
       summary: Crear un pedido
       tags:
@@ -519,17 +513,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  clienteId:
-                    type: integer
-                  estado:
-                    type: string
-                  fecha:
-                    type: string
-                    format: date-time
+                $ref: "#/components/schemas/PedidoCompleto"
         "404":
           description: Pedido no encontrado
     put:
@@ -1413,6 +1397,25 @@ components:
           type: integer
         tecnicoId:
           type: integer
+    PedidoCompleto:
+      allOf:
+        - $ref: "#/components/schemas/Pedido"
+        - type: object
+          properties:
+            cliente:
+              $ref: "#/components/schemas/Cliente"
+            tecnico:
+              $ref: "#/components/schemas/Tecnico"
+            area:
+              $ref: "#/components/schemas/Area"
+            disponibilidad:
+              type: array
+              items:
+                $ref: "#/components/schemas/PedidoDisponibilidad"
+            candidatos:
+              type: array
+              items:
+                $ref: "#/components/schemas/PedidoCandidatos"
     Factura:
       type: object
       properties:

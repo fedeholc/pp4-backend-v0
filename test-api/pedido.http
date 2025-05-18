@@ -7,6 +7,12 @@ GET /api/pedidos HTTP/1.1
 Host: {{host}}
 Authorization: Bearer {{token}}
 
+
+### Obtener todos los pedidos
+GET /api/pedidos?clienteId=1 HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{token}}
+
 ### Obtener pedido por ID
 GET /api/pedidos/1 HTTP/1.1
 Host: {{host}}

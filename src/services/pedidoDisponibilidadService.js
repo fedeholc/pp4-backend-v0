@@ -58,6 +58,7 @@ export async function createPedidoDisponibilidad(pedidoDisponibilidad) {
   const { id, pedidoId, clienteId, dia, horaInicio, horaFin } =
     pedidoDisponibilidad;
 
+  console.log("Creando PedidoDisponibilidad:", pedidoDisponibilidad);
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO PedidoDisponibilidad (id, pedidoId, clienteId, dia, horaInicio, horaFin) VALUES (?, ?, ?, ?, ?, ?)",

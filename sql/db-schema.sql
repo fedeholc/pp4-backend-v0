@@ -1,4 +1,4 @@
--- db v0.2
+-- db v0.3
  
 -- Evitar conflictos de claves externas al recrear
 SET FOREIGN_KEY_CHECKS = 0;
@@ -83,7 +83,7 @@ CREATE TABLE PedidoDisponibilidad (
     id INT PRIMARY KEY AUTO_INCREMENT,
     pedidoId int,
     clienteId int,
-    dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'),
+    dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'),
     horaInicio TIME,
     horaFin TIME,
     FOREIGN KEY (clienteId) REFERENCES Cliente(id),
