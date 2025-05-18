@@ -7,7 +7,9 @@ import * as pedidoService from "../services/pedidoService.js";
  */
 export async function getAll(req, res, next) {
   try {
-    const pedidos = await pedidoService.getAllPedidos();
+    // Tomar todos los query params como filtros
+    const filtros = { ...req.query };
+    const pedidos = await pedidoService.getAllPedidos(filtros);
     res.json(pedidos);
   } catch (err) {
     next(err);
