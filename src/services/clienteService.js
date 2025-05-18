@@ -52,6 +52,25 @@ export async function getClienteById(id) {
 }
 
 /**
+ * Obtiene un cliente por ID del usuario y valida el resultado.
+ * @param {number} id
+ * @returns {Promise<Cliente|null>}
+ */
+export async function getClienteByUserId(id) {
+  const [rows] = await pool.query("SELECT * FROM Cliente WHERE usuarioId = ?", [id]);
+  const cliente = rows[0];
+  if (!cliente) return null;
+
+  const parsed = ClienteSchema.safeParse(cliente);
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Cliente válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
+}
+
+/**
  *
  * @param {Cliente} cliente
  * @returns {Promise<Cliente>}>}

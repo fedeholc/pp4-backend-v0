@@ -1,2 +1,6 @@
 .env
 node_modules/
+
+# VsCode workspace
+.vscode/*
+pp4*.code-workspace

@@ -51,7 +51,7 @@ export async function login({ email, password }) {
   const [result] = await pool.query("SELECT * FROM Usuario WHERE email = ?", [
     email,
   ]);
-  if (result[0].length === 0) throw new Error("Credenciales inválidas");
+  if (Array.isArray(result) && result.length === 0) return null; // Usuario no encontrado
 
   const user = /** @type {Usuario} */ (result[0]);
   const valid = await bcrypt.compare(password, user.password);

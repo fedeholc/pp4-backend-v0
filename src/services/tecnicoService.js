@@ -49,6 +49,26 @@ export async function getTecnicoById(id) {
 
 /**
  *
+ * @param {number} id
+ * @returns {Promise<Tecnico|null>}
+ */
+export async function getTecnicoByUserId(id) {
+  const [rows] = await pool.query("SELECT * FROM Tecnico WHERE usuarioId = ?", [
+    id,
+  ]);
+  const tecnico = rows[0];
+  if (!tecnico) return null;
+  const parsed = TecnicoSchema.safeParse(tecnico);
+  if (!parsed.success) {
+    throw new Error("El resultado no es un Tecnico válido", {
+      cause: parsed.error,
+    });
+  }
+  return parsed.data;
+}
+
+/**
+ *
  * @param {Tecnico} tecnico
  * @returns {Promise<Tecnico>}
  */

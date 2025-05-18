@@ -4,6 +4,15 @@
 
 GET / HTTP/1.1
 Host: {{host}}
+###
+POST /api/auth/login HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "1234"
+}
 
 ###
 POST /api/auth/register HTTP/1.1
@@ -26,15 +35,17 @@ Content-Type: application/json
   "rol": "admin"
 }
 
+
 ###
 POST /api/auth/login HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "cliente@test.com",
   "password": "1234"
 }
+
 
 ###
 GET /api/usuarios/1 HTTP/1.1
