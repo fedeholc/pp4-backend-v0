@@ -107,7 +107,6 @@ export async function getAllPedidos(filtros = {}) {
             }
             candidatosVista.push(candidatoVista);
           }
-          console.log("Candidatos:", candidatosVista);
         }
         const candidatosVal = Array.isArray(candidatosVista)
           ? candidatosVista.filter(
@@ -115,7 +114,6 @@ export async function getAllPedidos(filtros = {}) {
             )
           : [];
 
-        console.log("cv:", candidatosVal);
         // Validar objeto completo
         const pedidoCompleto = {
           ...parsed.data,
@@ -238,8 +236,9 @@ export async function updatePedido(id, pedido) {
   } = pedido;
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
-    "UPDATE Pedido SET id=? clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
+    "UPDATE Pedido SET id=?, clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
     [
+      id, // id para SET id=?
       clienteId,
       tecnicoId,
       estado,
@@ -248,10 +247,10 @@ export async function updatePedido(id, pedido) {
       calificacion,
       comentario,
       respuesta,
-      fechaCreacion,
-      fechaCierre,
-      fechaCancelado,
-      id,
+      formatDateForMySQL(fechaCreacion),
+      formatDateForMySQL(fechaCierre),
+      formatDateForMySQL(fechaCancelado),
+      id, // id para WHERE id=?
     ]
   );
   const affectedRows = result.affectedRows;
