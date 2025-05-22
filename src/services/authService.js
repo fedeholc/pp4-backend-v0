@@ -24,8 +24,13 @@ export async function register({ email, password, rol }) {
     "SELECT id FROM Usuario WHERE email = ?",
     [email]
   );
+  console.log("exists:", exists, exists[0]);
 
-  if (exists[0] > 0) throw new Error("El email ya está registrado");
+  if (exists[0]) {
+    const error = new Error("El email ya está registrado");
+    error.code = "ER_DUP_ENTRY";
+    throw error;
+  }
 
   const hash = await bcrypt.hash(password, 10);
 
@@ -34,6 +39,9 @@ export async function register({ email, password, rol }) {
     "INSERT INTO Usuario (email, password, rol) VALUES (?, ?, ?)",
     [email, hash, rol]
   );
+  console.log(result);
+  if (result.affectedRows === 0) throw new Error("Error al crear el usuario");
+  if (result.insertId === 0) throw new Error("Error al crear el usuario");
   // Validar el usuario creado
   const parsed = UsuarioSchema.safeParse({ id: result.insertId, email, rol });
   if (!parsed.success) {
