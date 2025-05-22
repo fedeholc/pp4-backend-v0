@@ -28,7 +28,8 @@ export async function register({ email, password, rol }) {
 
   if (exists[0]) {
     const error = new Error("El email ya está registrado");
-    error.code = "ER_DUP_ENTRY";
+    // Add custom property
+   /*  error.message = "ER_DUP_ENTRY"; */
     throw error;
   }
 

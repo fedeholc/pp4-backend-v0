@@ -41,8 +41,8 @@ export async function register(req, res, next) {
 
     res.status(201).json({ ...user, token });
   } catch (error) {
-    if (error.code === "ER_DUP_ENTRY") {
-      return res.status(400).json({ message: "El email ya está registrado" });
+    if (error.message) {
+      return res.status(400).json({ message: error.message });
     }
     // Generar token JWT
     next(error);
