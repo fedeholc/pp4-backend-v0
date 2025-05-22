@@ -9,7 +9,7 @@ Authorization: Bearer {{token}}
 
 
 ### Obtener todos los pedidos
-GET /api/pedidos?clienteId=1 HTTP/1.1
+GET /api/pedidos?clienteId=57 HTTP/1.1
 Host: {{host}}
 Authorization: Bearer {{token}}
 

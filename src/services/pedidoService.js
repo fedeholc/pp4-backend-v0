@@ -4,7 +4,7 @@ import {
   PedidoSchema,
   PedidoCompletoSchema,
   PedidoDisponibilidadSchema,
-  PedidoCandidatosSchema,
+  CandidatoVistaSchema,
 } from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
@@ -57,7 +57,9 @@ export async function getAllPedidos(filtros = {}) {
           [row.id]
         );
         const [candidatos] = await pool.query(
-          "SELECT * FROM PedidoCandidatos WHERE pedidoId = ?",
+          `SELECT pc.*, t.* FROM PedidoCandidatos pc
+           INNER JOIN Tecnico t ON pc.tecnicoId = t.id
+           WHERE pc.pedidoId = ?`,
           [row.id]
         );
         const [clienteRows] = await pool.query(
@@ -78,11 +80,40 @@ export async function getAllPedidos(filtros = {}) {
               (d) => PedidoDisponibilidadSchema.safeParse(d).success
             )
           : [];
-        const candidatosVal = Array.isArray(candidatos)
-          ? candidatos.filter(
-              (c) => PedidoCandidatosSchema.safeParse(c).success
+
+        let candidatosVista = [];
+        if (Array.isArray(candidatos) && candidatos.length > 0) {
+          for (const candidato of candidatos) {
+            /**@type {import("../types").CandidatoVista} */
+            let candidatoVista = {
+              id: /** @type {any} */ (candidato).id,
+              pedidoId: /** @type {any} */ (candidato).pedidoId,
+              tecnicoId: /** @type {any} */ (candidato).tecnicoId,
+              nombre: /** @type {any} */ (candidato).nombre,
+              apellido: /** @type {any} */ (candidato).apellido,
+              telefono: /** @type {any} */ (candidato).telefono,
+              caracteristicas: /** @type {any} */ (candidato).caracteristicas,
+              fechaRegistro: /** @type {any} */ (candidato).fechaRegistro,
+              calificaciones: [],
+            };
+            let [result] = await pool.query(
+              "SELECT calificacion FROM Pedido WHERE tecnicoId = ?",
+              [candidatoVista.tecnicoId]
+            );
+            if (Array.isArray(result) && result.length > 0) {
+              candidatoVista.calificaciones = result.map((r) =>
+                r.calificacion ? r.calificacion : undefined
+              );
+            }
+            candidatosVista.push(candidatoVista);
+          }
+        }
+        const candidatosVal = Array.isArray(candidatosVista)
+          ? candidatosVista.filter(
+              (c) => CandidatoVistaSchema.safeParse(c).success
             )
           : [];
+
         // Validar objeto completo
         const pedidoCompleto = {
           ...parsed.data,
@@ -205,8 +236,9 @@ export async function updatePedido(id, pedido) {
   } = pedido;
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
-    "UPDATE Pedido SET id=? clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
+    "UPDATE Pedido SET id=?, clienteId=?, tecnicoId=?, estado=?, areaId=?, requerimiento=?, calificacion=?, comentario=?, respuesta=?, fechaCreacion=?, fechaCierre=?, fechaCancelado=? WHERE id=?",
     [
+      id, // id para SET id=?
       clienteId,
       tecnicoId,
       estado,
@@ -215,10 +247,10 @@ export async function updatePedido(id, pedido) {
       calificacion,
       comentario,
       respuesta,
-      fechaCreacion,
-      fechaCierre,
-      fechaCancelado,
-      id,
+      formatDateForMySQL(fechaCreacion),
+      formatDateForMySQL(fechaCierre),
+      formatDateForMySQL(fechaCancelado),
+      id, // id para WHERE id=?
     ]
   );
   const affectedRows = result.affectedRows;

@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-import { PedidoCandidatosSchema } from "../types/schemas.js";
+import { PedidoCandidatoSchema } from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
 /** @typedef {import("mysql2").FieldPacket} FieldPacket */
@@ -8,7 +8,7 @@ import { PedidoCandidatosSchema } from "../types/schemas.js";
 /** @typedef {import('../types').UpdateResult} UpdateResult */
 /** @typedef {import('../types').DeleteResult} DeleteResult */
 
-/** @typedef {import('../types').PedidoCandidatos} PedidoCandidatos */
+/** @typedef {import('../types').PedidoCandidato} PedidoCandidatos */
 
 /**
  * @returns {Promise<PedidoCandidatos[]>}
@@ -18,7 +18,7 @@ export async function getAllPedidoCandidatos() {
   const candidatos =
     Array.isArray(rows) &&
     rows.map((row) => {
-      const parsed = PedidoCandidatosSchema.safeParse(row);
+      const parsed = PedidoCandidatoSchema.safeParse(row);
       if (!parsed.success) {
         throw new Error("El resultado no es un PedidoCandidatos válido", {
           cause: parsed.error,
@@ -40,7 +40,7 @@ export async function getPedidoCandidatosById(id) {
   );
   const candidato = rows[0];
   if (!candidato) return null;
-  const parsed = PedidoCandidatosSchema.safeParse(candidato);
+  const parsed = PedidoCandidatoSchema.safeParse(candidato);
   if (!parsed.success) {
     throw new Error("El resultado no es un PedidoCandidatos válido", {
       cause: parsed.error,
@@ -61,7 +61,7 @@ export async function createPedidoCandidatos(pedidoCandidato) {
     [id, pedidoId, tecnicoId]
   );
 
-  const parsed = PedidoCandidatosSchema.safeParse({
+  const parsed = PedidoCandidatoSchema.safeParse({
     id: result.insertId,
     pedidoId,
     tecnicoId,
