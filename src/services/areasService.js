@@ -63,7 +63,8 @@ export async function createArea(area) {
 export async function getAreaById(id) {
   const [rows] = await pool.query("SELECT * FROM Areas WHERE id = ?", [id]);
   const area = { ...(rows[0] || null) };
-  if (!area) return null;
+  console.log("area", area);
+  if (!area || !area.id) return null;
   const parsed = AreaSchema.safeParse(area);
   if (!parsed.success) {
     throw new Error("El resultado no es un Area válido", {
