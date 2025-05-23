@@ -11,7 +11,6 @@ import { createUsuario, deleteUsuario } from "./usuarioService.js";
 
 /** @typedef {import('../types').Usuario} Usuario */
 
-
 describe("getClienteById", () => {
   it("debe retornar un cliente válido si existe", async () => {
     // Usa un ID que sepas que existe en tu base de datos
@@ -61,6 +60,7 @@ describe("createCliente y deleteCliente", () => {
       apellido: "TestApellido",
       telefono: "123456789",
       direccion: "TestDireccion",
+      fechaRegistro: new Date(),
     };
     // Crear
     const creado = await createCliente(clientePrueba);
@@ -93,6 +93,7 @@ describe("updateCliente", () => {
       apellido: "ApellidoOriginal",
       telefono: "111111111",
       direccion: "DireccionOriginal",
+      fechaRegistro: new Date(),
     };
     const creado = await createCliente(clientePrueba);
     // Actualizar
