@@ -1,0 +1,150 @@
+{
+  "info": {
+    "name": "Pedido API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los pedidos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedidos",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos"]
+        }
+      }
+    },
+    {
+      "name": "Obtener pedidos por cliente ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedidos?clienteId=57",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos"],
+          "query": [
+            {
+              "key": "clienteId",
+              "value": "57"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener pedido por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedidos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear pedido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n   \"id\": null,\n    \"clienteId\": 3,\n    \"tecnicoId\": null,\n    \"estado\": \"sin_candidatos\",\n    \"areaId\": 3,\n    \"requerimiento\": \"Revisión de instalación de gas\",\n    \"calificacion\": null,\n    \"comentario\": null,\n    \"respuesta\": null\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedidos",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar pedido",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clienteId\": 1,\n  \"areaId\": 1,\n  \"requerimiento\": \"Actualizar requerimiento\",\n  \"estado\": \"finalizado\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedidos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar pedido",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedidos/7",
+          "host": ["{{host}}"],
+          "path": ["api", "pedidos", "7"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

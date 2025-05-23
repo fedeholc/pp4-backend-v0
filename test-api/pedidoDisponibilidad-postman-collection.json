@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Pedido Disponibilidad API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todas las disponibilidades de pedidos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-disponibilidad",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-disponibilidad"]
+        }
+      }
+    },
+    {
+      "name": "Obtener disponibilidad de pedido por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-disponibilidad/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-disponibilidad", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear disponibilidad de pedido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": 1,\n  \"clienteId\": 2,\n  \"dia\": \"lunes\",\n  \"horaInicio\": \"09:00\",\n  \"horaFin\": \"12:00\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedido-disponibilidad",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-disponibilidad"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar disponibilidad de pedido",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": 1,\n  \"usuarioId\": 2,\n  \"fecha\": \"2025-05-02\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"13:00\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedido-disponibilidad/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-disponibilidad", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar disponibilidad de pedido",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-disponibilidad/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-disponibilidad", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

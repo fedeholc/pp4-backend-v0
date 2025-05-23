@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Pedido Candidatos API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los candidatos de pedidos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-candidatos",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-candidatos"]
+        }
+      }
+    },
+    {
+      "name": "Obtener candidato de pedido por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-candidatos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-candidatos", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear candidato de pedido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": 1,\n  \"tecnicoId\": 4,\n  \"estado\": \"pendiente\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedido-candidatos",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-candidatos"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar candidato de pedido",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": 1,\n  \"tecnicoId\": 2,\n  \"estado\": \"aceptado\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/pedido-candidatos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-candidatos", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar candidato de pedido",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/pedido-candidatos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "pedido-candidatos", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
