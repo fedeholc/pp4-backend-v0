@@ -1,6 +1,6 @@
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
-import { app } from "../server.js"; // Asegúrate de exportar tu instancia de Express desde server.js
+import { app } from "../server.js";
 import { ClienteSchema } from "../types/schemas.js"; // Importar el schema de Cliente
 
 let tokenAdmin;

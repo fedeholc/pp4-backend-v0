@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Tecnico Areas API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todas las relaciones técnico-área",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnico-areas",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnico-areas"]
+        }
+      }
+    },
+    {
+      "name": "Obtener relación técnico-área por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnico-areas/1",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnico-areas", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear relación técnico-área (requiere admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"tecnicoId\": 2,\n  \"areaId\": 3\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/tecnico-areas",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnico-areas"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar relación técnico-área",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tecnicoId\": 2,\n  \"areaId\": 4\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/tecnico-areas/7",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnico-areas", "7"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar relación técnico-área (requiere admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnico-areas/7",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnico-areas", "7"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

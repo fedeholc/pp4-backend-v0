@@ -13,20 +13,23 @@ function isValidEmail(email) {
  * Registro de usuario
  */
 export async function register(req, res, next) {
+  const { email, password, rol } = req.body;
+  if (!email || !password || !rol)
+    return res.status(400).json({ message: "Faltan datos requeridos" });
+  if (!isValidEmail(email))
+    return res.status(400).json({ message: "Email inválido" });
+  if (typeof password !== "string" || password.length < 4)
+    return res
+      .status(400)
+      .json({ message: "La contraseña debe tener al menos 4 caracteres" });
+  if (!allowedRoles.includes(rol))
+    return res.status(400).json({ message: "Rol inválido" });
+
   try {
-    const { email, password, rol } = req.body;
-    if (!email || !password || !rol)
-      return res.status(400).json({ message: "Faltan datos requeridos" });
-    if (!isValidEmail(email))
-      return res.status(400).json({ message: "Email inválido" });
-    if (typeof password !== "string" || password.length < 4)
-      return res
-        .status(400)
-        .json({ message: "La contraseña debe tener al menos 4 caracteres" });
-    if (!allowedRoles.includes(rol))
-      return res.status(400).json({ message: "Rol inválido" });
     const user = await authService.register({ email, password, rol });
-    // Generar token JWT
+    if (!user) {
+      return res.status(400).json({ message: "Error al crear el usuario" });
+    }
 
     const token = jwt.sign(
       { id: user.id, email: user.email, rol: user.rol },
@@ -35,9 +38,14 @@ export async function register(req, res, next) {
         expiresIn: "1h",
       }
     );
+
     res.status(201).json({ ...user, token });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    if (error.message) {
+      return res.status(400).json({ message: error.message });
+    }
+    // Generar token JWT
+    next(error);
   }
 }
 

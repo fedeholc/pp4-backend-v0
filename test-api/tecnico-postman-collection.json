@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Tecnico API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los técnicos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnicos",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnicos"]
+        }
+      }
+    },
+    {
+      "name": "Obtener técnico por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnicos/1",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnicos", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear técnico (requiere admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"usuarioId\": 2,\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"López\",\n  \"telefono\": \"1133445566\",\n  \"direccion\": \"Calle Técnica 456\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/tecnicos",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnicos"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar técnico",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Carlos actualizado\",\n  \"apellido\": \"López\",\n  \"telefono\": \"1177889900\",\n  \"direccion\": \"Av. Técnica 789\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/tecnicos/5",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnicos", "5"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar técnico (requiere admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/tecnicos/5",
+          "host": ["{{host}}"],
+          "path": ["api", "tecnicos", "5"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

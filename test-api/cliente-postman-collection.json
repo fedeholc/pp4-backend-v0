@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Cliente API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los clientes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/clientes",
+          "host": ["{{host}}"],
+          "path": ["api", "clientes"]
+        }
+      }
+    },
+    {
+      "name": "Obtener cliente por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/clientes/1",
+          "host": ["{{host}}"],
+          "path": ["api", "clientes", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear cliente (requiere admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"usuarioId\": 1,\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"García\",\n  \"telefono\": \"1122334455\",\n  \"direccion\": \"Calle Nueva 123\",\n  \"fechaRegistro\": \"2023-10-01\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/clientes",
+          "host": ["{{host}}"],
+          "path": ["api", "clientes"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar cliente",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan actualizado\",\n  \"apellido\": \"Pérez\",\n  \"telefono\": \"1199887766\",\n  \"direccion\": \"Av. Siempre Viva 123\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/clientes/1",
+          "host": ["{{host}}"],
+          "path": ["api", "clientes", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar cliente (requiere admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/clientes/9",
+          "host": ["{{host}}"],
+          "path": ["api", "clientes", "9"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

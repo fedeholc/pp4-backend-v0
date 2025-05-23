@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Factura API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todas las facturas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/facturas",
+          "host": ["{{host}}"],
+          "path": ["api", "facturas"]
+        }
+      }
+    },
+    {
+      "name": "Obtener factura por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/facturas/1",
+          "host": ["{{host}}"],
+          "path": ["api", "facturas", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear factura",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"usuarioId\": 1,\n  \"tecnicoId\": 1,\n  \"descripcion\": \"Pago de servicio\",\n  \"total\": 5000.00,\n  \"metodoPago\": \"tarjeta\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/facturas",
+          "host": ["{{host}}"],
+          "path": ["api", "facturas"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar factura",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuarioId\": 8,\n  \"descripcion\": \"Pago actualizado\",\n  \"total\": 6000.00,\n  \"metodoPago\": \"transferencia\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/facturas/6",
+          "host": ["{{host}}"],
+          "path": ["api", "facturas", "6"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar factura",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/facturas/1",
+          "host": ["{{host}}"],
+          "path": ["api", "facturas", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

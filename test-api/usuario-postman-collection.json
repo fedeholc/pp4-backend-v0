@@ -1,0 +1,121 @@
+{
+  "info": {
+    "name": "Usuario API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/usuarios",
+          "host": ["{{host}}"],
+          "path": ["api", "usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Obtener usuario por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/usuarios/1",
+          "host": ["{{host}}"],
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"nuevo@usuario.com\",\n  \"password\": \"123456\",\n  \"rol\": \"cliente\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/usuarios",
+          "host": ["{{host}}"],
+          "path": ["api", "usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar usuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"actualizado@usuario.com\",\n  \"password\": \"654321\",\n  \"rol\": \"tecnico\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/usuarios/1",
+          "host": ["{{host}}"],
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar usuario",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/usuarios/1",
+          "host": ["{{host}}"],
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
