@@ -100,7 +100,6 @@ Esta documentación es fundamental porque:
 - Permite la **generación automática** de documentación interactiva (como Swagger UI o ReDoc), código cliente en diversos lenguajes, y pruebas de API.
 - Mejora la **comprensión y mantenibilidad** de la API a lo largo del tiempo.
 
-Okay, aquí tienes una versión del texto redactada como si la estuvieras explicando tú en la documentación del proyecto:
 
 ## Pruebas de Endpoints con Rest Client y Postman
 
