@@ -35,16 +35,49 @@ export async function getAllTecnicos() {
  * @returns {Promise<Tecnico|null>}
  */
 export async function getTecnicoById(id) {
-  const [rows] = await pool.query("SELECT * FROM Tecnico WHERE id = ?", [id]);
-  const tecnico = rows[0];
+  // Obtener datos del técnico
+  const [tecnicoRows] = await pool.query("SELECT * FROM Tecnico WHERE id = ?", [
+    id,
+  ]);
+  const tecnico = tecnicoRows[0];
   if (!tecnico) return null;
+
+  // Obtener pedidos asociados al técnico
+  const [pedidosRows] = await pool.query(
+    `SELECT p.*, c.nombre as clienteNombre, c.apellido as clienteApellido, 
+     a.nombre as areaNombre 
+     FROM Pedido p 
+     LEFT JOIN Cliente c ON p.clienteId = c.id 
+     LEFT JOIN Areas a ON p.areaId = a.id 
+     WHERE p.tecnicoId = ?`,
+    [id]
+  );
+
+  // Obtener áreas del técnico
+  const [areasRows] = await pool.query(
+    `SELECT ta.id as tecnicoAreaId, ta.areaId, a.nombre, a.descripcion
+     FROM TecnicoAreas ta
+     LEFT JOIN Areas a ON ta.areaId = a.id
+     WHERE ta.tecnicoId = ?`,
+    [id]
+  );
+
+  // Validar el técnico
   const parsed = TecnicoSchema.safeParse(tecnico);
   if (!parsed.success) {
     throw new Error("El resultado no es un Tecnico válido", {
       cause: parsed.error,
     });
   }
-  return parsed.data;
+
+  // Agregar los pedidos y áreas al objeto técnico
+  const tecnicoCompleto = {
+    ...parsed.data,
+    pedidos: pedidosRows || [],
+    areas: areasRows || [],
+  };
+
+  return tecnicoCompleto;
 }
 
 /**
