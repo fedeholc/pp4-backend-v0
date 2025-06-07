@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { formatDateForMySQL } from "../helpers/formatDate.js";
 import { FacturaSchema } from "../types/schemas.js";
 
 /** @typedef {import("mysql2").QueryResult} QueryResult */
@@ -57,7 +58,7 @@ export async function createFactura(factura) {
   /** @type {[import("mysql2").ResultSetHeader, import("mysql2").FieldPacket[]]} */
   const [result] = await pool.query(
     "INSERT INTO Factura (id, usuarioId, fecha, descripcion, total, metodoPago) VALUES (?, ?, ?, ?, ?, ?)",
-    [id, usuarioId, fecha, descripcion, total, metodoPago]
+    [id, usuarioId, formatDateForMySQL(fecha), descripcion, total, metodoPago]
   );
   // Validar la factura creada
   const parsed = FacturaSchema.safeParse({
@@ -86,7 +87,7 @@ export async function updateFactura(id, factura) {
   /** @type {[ ResultSetHeader,  FieldPacket[]]} */
   const [result] = await pool.query(
     "UPDATE Factura SET usuarioId = ?, fecha = ?, descripcion = ?, total = ?, metodoPago = ? WHERE id = ?",
-    [usuarioId, fecha, descripcion, total, metodoPago, id]
+    [usuarioId, formatDateForMySQL(fecha), descripcion, total, metodoPago, id]
   );
   const affectedRows = result.affectedRows;
   return { affectedRows };
