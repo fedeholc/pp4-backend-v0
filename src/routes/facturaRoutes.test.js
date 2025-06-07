@@ -53,14 +53,12 @@ describe("facturaRoutes", () => {
       total: 100,
       metodoPago: "tarjeta",
     });
-    const res = await request(app)
-      .post("/facturas")
-      .send({
-        usuarioId: 1,
-        descripcion: "Nueva Factura",
-        total: 100,
-        metodoPago: "tarjeta",
-      });
+    const res = await request(app).post("/facturas").send({
+      usuarioId: 1,
+      descripcion: "Nueva Factura",
+      total: 100,
+      metodoPago: "tarjeta",
+    });
     expect(res.status).toBe(201);
     expect(res.body).toEqual({
       id: 2,
