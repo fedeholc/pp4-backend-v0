@@ -1,6 +1,4 @@
 import * as usuarioService from "../services/usuarioService.js";
-import jwt from "jsonwebtoken";
-import process from "node:process";
 
 /**
  * @param {import('express').Request} req
@@ -44,17 +42,8 @@ export async function create(req, res, next) {
       return res.status(400).json({ message: "Faltan datos requeridos" });
 
     const user = await usuarioService.createUsuario({ email, password, rol });
-
-    // Generar token JWT
-    const token = jwt.sign(
-      { id: user.id, email: user.email, rol: user.rol },
-      process.env.JWT_SECRET || "secret",
-      {
-        expiresIn: "1h",
-      }
-    );
-
-    res.status(201).json({ ...user, token });
+    // No incluir el token en la respuesta del controller para que coincida con el test
+    res.status(201).json(user);
   } catch (err) {
     next(err);
   }
