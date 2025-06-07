@@ -8,6 +8,7 @@ vi.mock("../services/usuarioService.js");
 vi.mock("../middlewares/authMiddleware.js", () => ({
   authenticateJWT: (req, res, next) => next(),
   authorizeRoles: () => (req, res, next) => next(),
+  authorizeSelfOrRoles: () => (req, res, next) => next(),
 }));
 
 const app = express();
@@ -53,7 +54,7 @@ describe("usuarioRoutes", () => {
     });
     const res = await request(app)
       .post("/usuarios")
-      .send({ email: "nuevo@mail.com", password: "pw", rol: "cliente" });
+      .send({ email: "nuevo@mail.com", password: "pw12", rol: "cliente" });
     expect(res.status).toBe(201);
     expect(res.body).toEqual({
       id: 2,
