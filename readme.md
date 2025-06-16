@@ -22,11 +22,51 @@ En la documentación del mismo se explica cómo correr el proyecto con Docker. L
 
 ## Cómo correr el backend
 
-Instalar dependencias:
+1. Clonar el repositorio:
+
+```bash
+git clone https://github.com/fedeholc/pp4-backend-v0.git
+```
+
+2. Entrar al directorio del proyecto:
+
+```bash
+cd pp4-backend-v0
+```
+
+3. Instalar las dependencias:
 
 ```bash
 npm install
 ```
+
+4. Crear la base de datos:
+
+- Si se está usando MySQL, crear la base de datos `pp4` y `pp4_test` (para las pruebas).
+- Para facilitar la creación de la base de datos y tener datos para probar se pueden utilizar los scripts de inicialización que se encuentran en la carpeta `sql`:
+- `db-init.sql` crea la base de datos `pp4`.
+- `db-schema.sql` crea las tablas y relaciones necesarias.
+- `db-seeds.sql` inserta datos de ejemplo en las tablas.
+- Para ejecutar estos scripts, se puede usar un cliente de MySQL como MySQL Workbench o la línea de comandos de MySQL. Por ejemplo:
+
+```bash
+mysql -u root -p < sql/db-init.sql
+mysql -u root -p pp4 < sql/db-schema.sql
+mysql -u root -p pp4 < sql/db-seeds.sql
+```
+
+Debe repetirse el mismo procedimiento para la base de datos de pruebas `pp4_test`, cambiando el nombre de la base de datos en los comandos.
+
+5. Configurar las variables de entorno:
+
+   - El backend utiliza variables de entorno para su configuración. Por defecto, se espera que existan las siguientes variables:
+     - `PORT`: Puerto en el que correrá el servidor (por defecto 5000).
+     - `ADDRESS`: Dirección del servidor (por defecto localhost).
+     - `DB_HOST`: Host de la base de datos (por defecto localhost).
+     - `DB_USER`: Usuario de la base de datos (por defecto root).
+     - `DB_PASSWORD`: Contraseña del usuario de la base de datos (por defecto 1234).
+     - `DB_NAME`: Nombre de la base de datos principal (por defecto pp4).
+     - `DB_TEST_NAME`: Nombre de la base de datos para pruebas (por defecto pp4_test).
 
 Si se quiere modificar la configuración que viene por defecto, crear el archivo `.env`, ej:
 
@@ -40,11 +80,15 @@ DB_NAME=pp4
 DB_TEST_NAME=pp4_test
 ```
 
-Para correr el backend:
+6. Iniciar el servidor:
+
+   - Para iniciar el servidor, se puede usar el siguiente comando:
 
 ```bash
 npm start
 ```
+
+Esto iniciará el servidor en el puerto especificado (por defecto 5000) y estará listo para recibir peticiones.
 
 ## Habilitar / deshabilitar JSDoc
 
