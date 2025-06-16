@@ -100,7 +100,6 @@ Esta documentación es fundamental porque:
 - Permite la **generación automática** de documentación interactiva (como Swagger UI o ReDoc), código cliente en diversos lenguajes, y pruebas de API.
 - Mejora la **comprensión y mantenibilidad** de la API a lo largo del tiempo.
 
-
 ## Pruebas de Endpoints con Rest Client y Postman
 
 Para facilitar la prueba de los endpoints de este backend, he incluido una serie de archivos dentro de la carpeta test-api. Considero que estos archivos son cruciales para verificar el correcto funcionamiento de la API durante el desarrollo y su posterior mantenimiento.
@@ -136,22 +135,4 @@ host = localhost:5000
 
 Allí se debe colocar el host, en coincidencia con el que se haya configurado en el backend, y los tokens de los usuarios que se quieran probar.
 
-Para obtener los tokens se puede user el endpoint de login con uno de los usuarios que ya están creados en la base de datos, y copiar el token que devuelve.
-
-## Pruebas End-to-End (E2E) del Frontend con Playwright (Planificadas)
-
-Si bien las pruebas descritas anteriormente se centran en el backend, también tenemos previsto implementar pruebas end-to-end (E2E) para la aplicación frontend. La herramienta elegida para estas pruebas será **Playwright**, aprovechando su capacidad para automatizar navegadores modernos y simular interacciones de usuario complejas a través de la interfaz gráfica, tal como lo haría un usuario final.
-
-**Estado Actual:**
-
-Actualmente, estas pruebas E2E para el frontend **aún no se han implementado**. La razón principal es que la interfaz de usuario (UI) del frontend se encuentra en una fase de desarrollo activo y está sujeta a cambios frecuentes. Realizar pruebas E2E detalladas sobre una UI que evoluciona constantemente resultaría ineficiente, ya que los selectores de elementos y los flujos de usuario podrían romperse con cada modificación visual o estructural.
-
-**Plan Futuro:**
-
-Una vez que la interfaz del frontend alcance un estado más estable y las funcionalidades principales estén consolidadas, procederemos a diseñar y ejecutar los scripts de prueba E2E con **Playwright**. Estas pruebas serán fundamentales para:
-
-- Verificar la correcta integración entre el frontend y el backend desde la perspectiva del usuario.
-- Asegurar que los flujos de usuario críticos (como el registro, login, creación de pedidos, etc.) funcionen correctamente de principio a fin.
-- Detectar regresiones en la UI o en la interacción con la API que podrían pasar desapercibidas en pruebas más aisladas.
-
-El objetivo es garantizar una experiencia de usuario fluida y sin errores antes de cualquier despliegue a producción.
+Para obtener los tokens se puede usar el endpoint de login con uno de los usuarios que ya están creados en la base de datos, y copiar el token que devuelve.
