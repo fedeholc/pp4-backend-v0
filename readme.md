@@ -1,4 +1,24 @@
-# PP4 - Backend
+# Práctica profesionalizante IV: proyecto integrador <!-- omit in toc -->
+
+## Trabajo Práctico Integrador <!-- omit in toc -->
+
+### Equipo:
+
+- **Federico Holc** (comisión B)
+- **Iris Zamora** (comisión A)
+- **Martín López** (comisión B)
+- **Agustina Kopistinski** (comisión A)
+
+### Repositorios:
+
+- **Frontend**: [https://github.com/fedeholc/pp4-front-v0](https://github.com/fedeholc/pp4-front-v0)
+- **Backend**: [https://github.com/fedeholc/pp4-backend-v0](https://github.com/fedeholc/pp4-backend-v0)
+
+Una versión dockerizada y con deploy a AWS (realizada para el Seminario de Actualización dev ops) puede encontrarse en el siguiente repositorio:
+
+- https://github.com/fedeholc/devops-tpi-infra/
+
+En la documentación del mismo se explica cómo correr el proyecto con Docker. La explicación que sigue es para correr el proyecto sin Docker, de manera local.
 
 ## Cómo correr el backend
 
